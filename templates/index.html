@@ -6,10 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      --brand-primary: #005f7f;
-      --brand-primary-dark: #00445b;
-      --brand-accent: #00a3c4;
-      --bg-main: #f3f4f6;
+      /* Coastline custom theme */
+      --coastline-deep: #00465a;        /* deep teal/navy */
+      --coastline-ocean: #007f9f;       /* brighter ocean blue */
+      --coastline-foam: #e0f4f8;        /* light aqua/seafoam */
+      --coastline-sand: #fdf6ec;        /* soft sand background */
+      --coastline-coral: #ff7a59;       /* accent (buttons/alerts) */
+
+      --bg-main: var(--coastline-sand);
       --bg-chat: #f9fafb;
     }
 
@@ -34,16 +38,16 @@
       max-width: 1100px;
       height: 95vh;
       margin: 10px;
-      border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.12);
       display: flex;
       overflow: hidden;
     }
 
-    /* LEFT SIDEBAR */
+    /* LEFT SIDEBAR (A — Left Sidebar) */
     .sidebar {
       width: 260px;
-      background: var(--brand-primary);
+      background: linear-gradient(180deg, var(--coastline-deep), var(--coastline-ocean));
       color: #ffffff;
       display: flex;
       flex-direction: column;
@@ -52,20 +56,23 @@
 
     .sidebar-logo {
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .sidebar-logo img {
-      width: 120px;
+      max-width: 120px;   /* desktop size */
+      width: 60%;         /* auto-shrink on smaller sidebars */
       height: auto;
       border-radius: 50%;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+      display: block;
+      margin: 0 auto;
     }
 
     .sidebar-title {
       font-size: 18px;
       font-weight: bold;
-      margin-top: 8px;
+      margin-top: 10px;
       text-align: center;
     }
 
@@ -76,18 +83,13 @@
       color: #d1f2ff;
     }
 
-    .sidebar-main {
-      margin-top: 12px;
-      flex: 1;
-    }
-
     .sidebar-section-title {
       font-size: 13px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       margin-top: 18px;
       margin-bottom: 6px;
-      opacity: 0.85;
+      opacity: 0.9;
     }
 
     .sidebar-nav {
@@ -103,27 +105,28 @@
     .sidebar-nav button {
       width: 100%;
       border: none;
-      border-radius: 6px;
-      padding: 8px 10px;
+      border-radius: 999px;
+      padding: 8px 12px;
       text-align: left;
       font-size: 13px;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255,255,255,0.12);
       color: #ffffff;
       cursor: pointer;
-      transition: background 0.15s ease, transform 0.05s ease;
+      transition: background 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
     }
 
-    .sidebar-nav button:hover,
-    .sidebar-nav button:focus-visible {
-      background: rgba(255, 255, 255, 0.22);
+    .sidebar-nav button:hover {
+      background: rgba(255,255,255,0.28);
       transform: translateY(-1px);
-      outline: none;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.25);
     }
 
     .sidebar-footer {
       margin-top: auto;
       font-size: 11px;
-      opacity: 0.9;
+      opacity: 0.95;
+      border-top: 1px solid rgba(255,255,255,0.16);
+      padding-top: 8px;
     }
 
     .sidebar-footer strong {
@@ -140,7 +143,7 @@
     }
 
     .main-header {
-      padding: 10px 16px;
+      padding: 10px 16px 8px;
       border-bottom: 1px solid #e5e7eb;
       background: #ffffff;
     }
@@ -148,13 +151,13 @@
     .main-title {
       font-size: 18px;
       font-weight: bold;
-      color: var(--brand-primary-dark);
+      color: var(--coastline-deep);
       margin: 0;
     }
 
     .main-subtitle {
       font-size: 13px;
-      margin: 2px 0 6px;
+      margin: 3px 0 6px;
       color: #4b5563;
     }
 
@@ -171,26 +174,26 @@
       font-size: 12px;
       background: #f9fafb;
       cursor: pointer;
-      transition: background 0.15s ease, border-color 0.15s ease;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
     }
 
-    .pill-button:hover,
-    .pill-button:focus-visible {
-      background: #e5f6fb;
-      border-color: var(--brand-accent);
-      outline: none;
+    .pill-button:hover {
+      background: var(--coastline-foam);
+      border-color: var(--coastline-ocean);
+      transform: translateY(-1px);
     }
 
     .chat-messages {
       flex: 1;
       padding: 14px 16px;
       overflow-y: auto;
+      background: linear-gradient(180deg, var(--bg-chat), #ffffff);
     }
 
     .message {
       margin-bottom: 12px;
       padding: 8px 10px;
-      border-radius: 6px;
+      border-radius: 8px;
       max-width: 90%;
       line-height: 1.4;
       white-space: pre-wrap;
@@ -198,23 +201,23 @@
     }
 
     .message.user {
-      background: var(--brand-primary);
+      background: var(--coastline-ocean);
       color: #ffffff;
       margin-left: auto;
-      border-bottom-right-radius: 2px;
+      border-bottom-right-radius: 3px;
     }
 
     .message.bot {
       background: #e5e7eb;
       color: #111827;
       margin-right: auto;
-      border-bottom-left-radius: 2px;
+      border-bottom-left-radius: 3px;
     }
 
     .message.system {
-      background: #fef9c3;
-      border: 1px solid #facc15;
-      color: #824600;
+      background: #fff7e5;
+      border: 1px solid var(--coastline-coral);
+      color: #7a2e14;
       font-size: 13px;
     }
 
@@ -229,7 +232,7 @@
     .chat-input-area input {
       flex: 1;
       padding: 8px;
-      border-radius: 4px;
+      border-radius: 999px;
       border: 1px solid #d1d5db;
       font-size: 14px;
     }
@@ -237,23 +240,24 @@
     .chat-input-area button {
       padding: 8px 16px;
       border: none;
-      border-radius: 4px;
-      background: var(--brand-primary);
+      border-radius: 999px;
+      background: var(--coastline-deep);
       color: white;
       font-size: 14px;
       cursor: pointer;
-      transition: background 0.15s ease;
+      transition: background 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
     }
 
-    .chat-input-area button:hover,
-    .chat-input-area button:focus-visible {
-      background: var(--brand-primary-dark);
-      outline: none;
+    .chat-input-area button:hover:not(:disabled) {
+      background: var(--coastline-ocean);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+      transform: translateY(-1px);
     }
 
     .chat-input-area button:disabled {
       background: #9ca3af;
       cursor: not-allowed;
+      box-shadow: none;
     }
 
     .status-text {
@@ -262,198 +266,90 @@
       padding: 0 12px 4px;
     }
 
+    /* RESPONSIVE: sidebar + logo adjust on narrow screens */
     @media (max-width: 900px) {
       .app-shell {
         flex-direction: column;
         max-width: 100%;
+        height: 100vh;
+        margin: 0;
+        border-radius: 0;
       }
 
-/* --- SIDEBAR --- */
-.sidebar {
-  width: 260px;
-  background: var(--brand-primary);
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-}
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px 12px;
+      }
 
-/* Logo wrapper */
-.sidebar-logo {
-  text-align: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-}
+      .sidebar-logo {
+        margin-bottom: 0;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
 
-/* Responsive logo image */
-.sidebar-logo img {
-  width: 90px;              /* default logo size */
-  max-width: 28vw;          /* shrink on narrow screens */
-  height: auto;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
-  transition: width 0.2s ease;
-}
+      .sidebar-logo img {
+        max-width: 64px;  /* smaller logo on mobile */
+        width: 64px;
+      }
 
-/* Titles under logo */
-.sidebar-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-top: 10px;
-  text-align: center;
-}
+      .sidebar-main {
+        flex: 1;
+      }
 
-.sidebar-subtitle {
-  font-size: 12px;
-  text-align: center;
-  margin-top: 4px;
-  color: #d1f2ff;
-}
+      .sidebar-footer {
+        display: none;
+      }
+    }
 
-/* Section headers */
-.sidebar-section-title {
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 18px;
-  margin-bottom: 6px;
-  opacity: 0.85;
-}
-
-/* Buttons List */
-.sidebar-nav {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar-nav li {
-  margin-bottom: 6px;
-}
-
-.sidebar-nav button {
-  width: 100%;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 10px;
-  text-align: left;
-  font-size: 13px;
-  background: rgba(255,255,255,0.12);
-  color: #ffffff;
-  cursor: pointer;
-  transition: background 0.15s ease, transform 0.05s ease;
-}
-
-.sidebar-nav button:hover {
-  background: rgba(255,255,255,0.22);
-  transform: translateY(-1px);
-}
-
-/* Footer */
-.sidebar-footer {
-  margin-top: auto;
-  font-size: 11px;
-  opacity: 0.9;
-}
-
-/* --------------------------------------------------
-   RESPONSIVE BEHAVIOR FOR MOBILE (sidebar collapses)
---------------------------------------------------- */
-@media (max-width: 900px) {
-  .sidebar {
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    padding: 10px;
-    justify-content: flex-start;
-  }
-
-  .sidebar-logo {
-    margin-bottom: 0;
-    margin-right: 14px;
-    padding-bottom: 0;
-    border-bottom: none;
-  }
-
-  .sidebar-logo img {
-    width: 55px;       /* smaller logo on phones */
-    max-width: 55px;
-  }
-
-  .sidebar-title,
-  .sidebar-subtitle {
-    text-align: left;
-  }
-
-  .sidebar-main {
-    flex: 1;
-    padding-left: 10px;
-  }
-
-  .sidebar-footer {
-    display: none;
-  }
-}
-
+    @media (max-width: 600px) {
+      .main-title {
+        font-size: 16px;
+      }
+      .main-subtitle {
+        font-size: 12px;
+      }
+      .pill-row {
+        gap: 4px;
+      }
+      .pill-button {
+        font-size: 11px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="app-shell">
-    <!-- LEFT SIDEBAR -->
+    <!-- A — LEFT SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-logo">
-        <!-- Make sure this file exists at: static/Final+-+Regina+Yost-1920w.webp -->
-        <img src="/static/Final+-+Regina+Yost-1920w.webp" alt="Coastline Family Medicine logo" />
-        <div class="sidebar-title">Coastline Safety Bot</div>
-        <div class="sidebar-subtitle">
-          Coastline Family Medicine Safety &amp; Compliance Training Portal
+        <!-- Make sure your logo file is at: static/Final+-+Regina+Yost-1920w.webp -->
+        <img src="/static/Final+-+Regina+Yost-1920w.webp" alt="Coastline Family Medicine" />
+        <div>
+          <div class="sidebar-title">Coastline Safety Bot</div>
+          <div class="sidebar-subtitle">
+            Coastline Family Medicine Safety &amp; Compliance Training Portal
+          </div>
         </div>
       </div>
 
       <div class="sidebar-main">
         <div class="sidebar-section-title">Training</div>
         <ul class="sidebar-nav">
-          <li>
-            <button onclick="quickPrompt('Start new hire training')">
-              Start New-Hire Training
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Begin Bloodborne Pathogens training module')">
-              Bloodborne Pathogens
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Hazard Communication training for clinic staff')">
-              Hazard Communication
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Review PPE requirements for Coastline clinical staff')">
-              PPE &amp; Exposure Control
-            </button>
-          </li>
+          <li><button onclick="quickPrompt('Start new hire training')">Start New-Hire Training</button></li>
+          <li><button onclick="quickPrompt('Begin Bloodborne Pathogens training module')">Bloodborne Pathogens</button></li>
+          <li><button onclick="quickPrompt('Hazard Communication training for clinic staff')">Hazard Communication</button></li>
+          <li><button onclick="quickPrompt('Review PPE requirements for Coastline clinical staff')">PPE &amp; Exposure Control</button></li>
         </ul>
 
         <div class="sidebar-section-title">Quick Actions</div>
         <ul class="sidebar-nav">
-          <li>
-            <button onclick="quickPrompt('How do I report a needlestick or exposure?')">
-              Report Exposure
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">
-              Emergency Procedures
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Give me a quick safety refresher in 3 bullet points.')">
-              3-Minute Refresher
-            </button>
-          </li>
+          <li><button onclick="quickPrompt('How do I report a needlestick or exposure?')">Report Exposure</button></li>
+          <li><button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">Emergency Procedures</button></li>
+          <li><button onclick="quickPrompt('Give me a quick safety refresher in 3 bullet points.')">3-Minute Refresher</button></li>
         </ul>
       </div>
 
@@ -472,15 +368,9 @@
           Use this portal to complete your new-hire safety training or ask any Coastline safety question.
         </p>
         <div class="pill-row">
-          <button class="pill-button" onclick="quickPrompt('Start new hire training')">
-            Start training
-          </button>
-          <button class="pill-button" onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">
-            Safety overview
-          </button>
-          <button class="pill-button" onclick="quickPrompt('What should I do right after a needlestick?')">
-            Needlestick steps
-          </button>
+          <button class="pill-button" onclick="quickPrompt('Start new hire training')">Start training</button>
+          <button class="pill-button" onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">Safety overview</button>
+          <button class="pill-button" onclick="quickPrompt('What should I do right after a needlestick?')">Needlestick steps</button>
         </div>
       </header>
 
@@ -490,7 +380,6 @@ Hi! I’m the Coastline Family Medicine safety training bot.
 You can say “Start new hire training” or ask a specific safety question.
         </div>
       </div>
-
       <div class="status-text" id="statusText"></div>
 
       <div class="chat-input-area">
@@ -577,9 +466,3 @@ You can say “Start new hire training” or ask a specific safety question.
   </script>
 </body>
 </html>
-
-
-
-
-
-
