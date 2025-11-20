@@ -268,31 +268,135 @@
         max-width: 100%;
       }
 
-      .sidebar {
-        width: 100%;
-        flex-direction: row;
-        align-items: center;
-        height: auto;
-      }
+/* --- SIDEBAR --- */
+.sidebar {
+  width: 260px;
+  background: var(--brand-primary);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+}
 
-      .sidebar-logo {
-        margin-bottom: 0;
-        margin-right: 10px;
-      }
+/* Logo wrapper */
+.sidebar-logo {
+  text-align: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
 
-      .sidebar-title,
-      .sidebar-subtitle {
-        text-align: left;
-      }
+/* Responsive logo image */
+.sidebar-logo img {
+  width: 90px;              /* default logo size */
+  max-width: 28vw;          /* shrink on narrow screens */
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+  transition: width 0.2s ease;
+}
 
-      .sidebar-main {
-        flex: 1;
-      }
+/* Titles under logo */
+.sidebar-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
 
-      .sidebar-footer {
-        display: none;
-      }
-    }
+.sidebar-subtitle {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 4px;
+  color: #d1f2ff;
+}
+
+/* Section headers */
+.sidebar-section-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 18px;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+
+/* Buttons List */
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li {
+  margin-bottom: 6px;
+}
+
+.sidebar-nav button {
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 10px;
+  text-align: left;
+  font-size: 13px;
+  background: rgba(255,255,255,0.12);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.sidebar-nav button:hover {
+  background: rgba(255,255,255,0.22);
+  transform: translateY(-1px);
+}
+
+/* Footer */
+.sidebar-footer {
+  margin-top: auto;
+  font-size: 11px;
+  opacity: 0.9;
+}
+
+/* --------------------------------------------------
+   RESPONSIVE BEHAVIOR FOR MOBILE (sidebar collapses)
+--------------------------------------------------- */
+@media (max-width: 900px) {
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    justify-content: flex-start;
+  }
+
+  .sidebar-logo {
+    margin-bottom: 0;
+    margin-right: 14px;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .sidebar-logo img {
+    width: 55px;       /* smaller logo on phones */
+    max-width: 55px;
+  }
+
+  .sidebar-title,
+  .sidebar-subtitle {
+    text-align: left;
+  }
+
+  .sidebar-main {
+    flex: 1;
+    padding-left: 10px;
+  }
+
+  .sidebar-footer {
+    display: none;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -473,6 +577,7 @@ You can say “Start new hire training” or ask a specific safety question.
   </script>
 </body>
 </html>
+
 
 
 
