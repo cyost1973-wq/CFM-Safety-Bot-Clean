@@ -1,10 +1,13 @@
 import os
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, send_from_directory
 from openai import OpenAI
 
-app = Flask(__name__, template_folder="templates")
+# --- Flask app ---
+# static_folder="static" lets us serve /static/logo.webp, CSS, etc.
+app = Flask(__name__, static_folder="static")
 
-# Load API key
+# --- OpenAI client ---
+# Make sure OPENAI_API_KEY is set in Render's "Environment" settings.
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # ---------------------------------------------------------
@@ -115,5 +118,6 @@ def chat():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
 
 
