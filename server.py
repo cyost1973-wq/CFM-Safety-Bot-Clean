@@ -1,19 +1,20 @@
 import os
-from flask import Flask, request, jsonify, send_from_directory, render_template
+from flask import Flask, request, jsonify, render_template
 from openai import OpenAI
 
-# --- Flask app ---
-# static_folder="static" lets us serve /static/logo.webp, CSS, etc.
-app = Flask(__name__, static_folder="static")
+# -----------------------------------------
+#  FLASK APP SETUP
+# -----------------------------------------
+app = Flask(__name__, static_folder="static", template_folder="templates")
 
-# --- OpenAI client ---
-# Make sure OPENAI_API_KEY is set in Render's "Environment" settings.
+# -----------------------------------------
+#  OPENAI CLIENT
+# -----------------------------------------
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-# ---------------------------------------------------------
-#  SYSTEM PROMPT — HIGH-QUALITY TRAINING VERSION
-# ---------------------------------------------------------
-
+# -----------------------------------------
+#  SYSTEM PROMPT — OSHA TRAINING BOT
+# -----------------------------------------
 SYSTEM_PROMPT = """
 You are the **Coastline Family Medicine New Hire / Safety Training Bot**.
 
@@ -38,86 +39,95 @@ Your role:
    • Incident & exposure reporting procedures  
 
 2. For each module:
-   • Begin with **Objective** (3-5 bullets)  
+   • Begin with **Objective** (3–5 bullets)  
    • Provide a clear, short explanation (6–10 sentences max)  
-   • End with a **quiz**: 5 short multiple choice questions  
-   • After user answers, give correct answers and short explanations  
-   • Then ask if they want to continue
+   • End with a **quiz** (5 MCQs)  
+   • After user answers, give correct answers & brief explanation  
+   • Then confirm if they want to continue
 
 3. Flow behavior:
-   • If user says “Start” or “Begin training,” start at Module 1  
-   • If they say “Next” or “Continue,” move to next module  
-   • If they ask a question, pause training, answer, then resume  
-   • Track where you are in the training based on conversation context
+   • “Start training” → begin at Module 1  
+   • “Next” / “Continue” → next module  
+   • Questions pause training, answer, then resume  
+   • Infer training module from context
 
 4. Exposure / Incident rules:
-   • If the user describes a needlestick, splash, cut, or blood/body fluid exposure:
-     – Tell them to IMMEDIATELY wash the exposed area (or flush eyes)  
-     – Tell them to notify supervisor at once  
-     – Tell them to follow Coastline exposure reporting procedures  
-   • Do not provide medical care instructions beyond initial first steps
+   • For needlestick, splash, cut, or blood exposure:
+       – Tell them to wash/flush the area  
+       – Notify supervisor  
+       – Follow Coastline exposure reporting procedures  
+   • No medical diagnosis or treatment advice
 
 5. Boundaries:
-   • Do NOT diagnose medical conditions  
-   • Do NOT give treatment advice for patients  
-   • Stay entirely within workplace safety and OSHA topics  
-   • If unsure about a site-specific rule, say:  
-     “Please follow your facility’s written policy or ask your supervisor.”
+   • Do NOT diagnose or treat medical issues  
+   • ONLY provide workplace safety guidance  
+   • For uncertain site-specific policies:  
+     “Follow your facility’s written policy or ask your supervisor.”
 
-Always stay structured, focused, and training-oriented.
+Stay structured, focused, and training-oriented.
 """
 
-# ---------------------------------------------------------
+# -----------------------------------------
 #  ROUTES
-# ---------------------------------------------------------
+# -----------------------------------------
 
 @app.route("/", methods=["GET"])
 def index():
+    """Serve the main UI."""
     return render_template("index.html")
 
 
 @app.route("/chat", methods=["POST"])
 def chat():
+    """Main chat endpoint for the AI bot."""
     try:
-        data = request.get_json()
-        user_message = data.get("message", "").strip()
+        data = request.get_json() or {}
+        user_message = (data.get("message") or "").strip()
+        history = data.get("history") or []
 
         if not user_message:
-            return jsonify({"reply": "I didn’t receive a message. Please try again."}), 200
+            return jsonify({"reply": "I didn’t receive anything — try again?"}), 200
 
-        # Build messages list with system + user
-        messages = [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": user_message},
-        ]
+        # Build conversation list for the model
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
-        # OpenAI call
+        # Rebuild conversation history (last 6 turns)
+        for turn in history[-6:]:
+            if turn.get("user"):
+                messages.append({"role": "user", "content": turn["user"]})
+            if turn.get("assistant"):
+                messages.append({"role": "assistant", "content": turn["assistant"]})
+
+        # Add new user message
+        messages.append({"role": "user", "content": user_message})
+
+        # Call OpenAI
         response = client.chat.completions.create(
             model="gpt-4.1-mini",
             messages=messages,
             temperature=0.3,
-            max_tokens=800,
+            max_tokens=900,
         )
 
-        bot_reply = response.choices[0].message.content
+        bot_reply = response.choices[0].message.content.strip()
         return jsonify({"reply": bot_reply}), 200
 
     except Exception as e:
-        print("Error contacting OpenAI:", e)
+        print("OpenAI / chat error:", e)
         return jsonify({
             "reply": (
-                "I'm having temporary trouble reaching the training engine. "
-                "Please try again shortly. If this keeps happening, notify the Safety Officer."
+                "I'm having trouble contacting the training engine. "
+                "Try again in a moment. If it keeps happening, notify the Safety Officer."
             )
         }), 200
 
 
-# ---------------------------------------------------------
+# -----------------------------------------
 #  ENTRY POINT
-# ---------------------------------------------------------
-
+# -----------------------------------------
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
 
 
 
