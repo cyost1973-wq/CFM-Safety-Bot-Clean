@@ -35,12 +35,12 @@
       height: 95vh;
       margin: 10px;
       border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
       display: flex;
       overflow: hidden;
     }
 
-    /* LEFT SIDEBAR (A — Left Sidebar) */
+    /* LEFT SIDEBAR */
     .sidebar {
       width: 260px;
       background: var(--brand-primary);
@@ -59,7 +59,7 @@
       width: 120px;
       height: auto;
       border-radius: 50%;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
     }
 
     .sidebar-title {
@@ -74,6 +74,11 @@
       text-align: center;
       margin-top: 4px;
       color: #d1f2ff;
+    }
+
+    .sidebar-main {
+      margin-top: 12px;
+      flex: 1;
     }
 
     .sidebar-section-title {
@@ -102,15 +107,17 @@
       padding: 8px 10px;
       text-align: left;
       font-size: 13px;
-      background: rgba(255,255,255,0.12);
+      background: rgba(255, 255, 255, 0.12);
       color: #ffffff;
       cursor: pointer;
       transition: background 0.15s ease, transform 0.05s ease;
     }
 
-    .sidebar-nav button:hover {
-      background: rgba(255,255,255,0.22);
+    .sidebar-nav button:hover,
+    .sidebar-nav button:focus-visible {
+      background: rgba(255, 255, 255, 0.22);
       transform: translateY(-1px);
+      outline: none;
     }
 
     .sidebar-footer {
@@ -164,11 +171,14 @@
       font-size: 12px;
       background: #f9fafb;
       cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
     }
 
-    .pill-button:hover {
+    .pill-button:hover,
+    .pill-button:focus-visible {
       background: #e5f6fb;
       border-color: var(--brand-accent);
+      outline: none;
     }
 
     .chat-messages {
@@ -232,6 +242,13 @@
       color: white;
       font-size: 14px;
       cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .chat-input-area button:hover,
+    .chat-input-area button:focus-visible {
+      background: var(--brand-primary-dark);
+      outline: none;
     }
 
     .chat-input-area button:disabled {
@@ -250,22 +267,28 @@
         flex-direction: column;
         max-width: 100%;
       }
+
       .sidebar {
         width: 100%;
         flex-direction: row;
         align-items: center;
         height: auto;
       }
+
       .sidebar-logo {
         margin-bottom: 0;
         margin-right: 10px;
       }
-      .sidebar-title, .sidebar-subtitle {
+
+      .sidebar-title,
+      .sidebar-subtitle {
         text-align: left;
       }
+
       .sidebar-main {
         flex: 1;
       }
+
       .sidebar-footer {
         display: none;
       }
@@ -274,10 +297,10 @@
 </head>
 <body>
   <div class="app-shell">
-    <!-- A — LEFT SIDEBAR -->
+    <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-logo">
-        <!-- Make sure to put your logo at static/Final+-+Regina+Yost-1920w.webp -->
+        <!-- Make sure this file exists at: static/Final+-+Regina+Yost-1920w.webp -->
         <img src="/static/Final+-+Regina+Yost-1920w.webp" alt="Coastline Family Medicine logo" />
         <div class="sidebar-title">Coastline Safety Bot</div>
         <div class="sidebar-subtitle">
@@ -288,17 +311,45 @@
       <div class="sidebar-main">
         <div class="sidebar-section-title">Training</div>
         <ul class="sidebar-nav">
-          <li><button onclick="quickPrompt('Start new hire training')">Start New-Hire Training</button></li>
-          <li><button onclick="quickPrompt('Begin Bloodborne Pathogens training module')">Bloodborne Pathogens</button></li>
-          <li><button onclick="quickPrompt('Hazard Communication training for clinic staff')">Hazard Communication</button></li>
-          <li><button onclick="quickPrompt('Review PPE requirements for Coastline clinical staff')">PPE &amp; Exposure Control</button></li>
+          <li>
+            <button onclick="quickPrompt('Start new hire training')">
+              Start New-Hire Training
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Begin Bloodborne Pathogens training module')">
+              Bloodborne Pathogens
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Hazard Communication training for clinic staff')">
+              Hazard Communication
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Review PPE requirements for Coastline clinical staff')">
+              PPE &amp; Exposure Control
+            </button>
+          </li>
         </ul>
 
         <div class="sidebar-section-title">Quick Actions</div>
         <ul class="sidebar-nav">
-          <li><button onclick="quickPrompt('How do I report a needlestick or exposure?')">Report Exposure</button></li>
-          <li><button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">Emergency Procedures</button></li>
-          <li><button onclick="quickPrompt('Give me a quick safety refresher in 3 bullet points.')">3-Minute Refresher</button></li>
+          <li>
+            <button onclick="quickPrompt('How do I report a needlestick or exposure?')">
+              Report Exposure
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">
+              Emergency Procedures
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Give me a quick safety refresher in 3 bullet points.')">
+              3-Minute Refresher
+            </button>
+          </li>
         </ul>
       </div>
 
@@ -317,9 +368,15 @@
           Use this portal to complete your new-hire safety training or ask any Coastline safety question.
         </p>
         <div class="pill-row">
-          <button class="pill-button" onclick="quickPrompt('Start new hire training')">Start training</button>
-          <button class="pill-button" onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">Safety overview</button>
-          <button class="pill-button" onclick="quickPrompt('What should I do right after a needlestick?')">Needlestick steps</button>
+          <button class="pill-button" onclick="quickPrompt('Start new hire training')">
+            Start training
+          </button>
+          <button class="pill-button" onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">
+            Safety overview
+          </button>
+          <button class="pill-button" onclick="quickPrompt('What should I do right after a needlestick?')">
+            Needlestick steps
+          </button>
         </div>
       </header>
 
@@ -329,6 +386,7 @@ Hi! I’m the Coastline Family Medicine safety training bot.
 You can say “Start new hire training” or ask a specific safety question.
         </div>
       </div>
+
       <div class="status-text" id="statusText"></div>
 
       <div class="chat-input-area">
@@ -391,7 +449,6 @@ You can say “Start new hire training” or ask a specific safety question.
 
         if (data.reply) {
           addMessage(data.reply, "bot");
-          // Save this turn in history
           history.push({ user: text, assistant: data.reply });
         } else if (data.error) {
           addMessage("Error: " + data.error, "bot");
@@ -416,6 +473,7 @@ You can say “Start new hire training” or ask a specific safety question.
   </script>
 </body>
 </html>
+
 
 
 
