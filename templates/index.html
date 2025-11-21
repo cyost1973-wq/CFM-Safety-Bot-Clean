@@ -6,13 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
+      /* Coastline theme */
       --brand-primary: #005f7f;
-      --brand-primary-dark: #00445b;
-      --brand-accent: #00a3c4;
+      --brand-primary-dark: #003548;
+      --brand-accent: #06b6d4;
       --brand-soft: #e0f4fb;
-      --bg-main: #f3f4f6;
+      --brand-soft-deep: #c7e6f5;
+
+      --bg-main: #eef2f7;
       --bg-chat: #f9fafb;
       --danger: #b91c1c;
+
+      --radius-lg: 12px;
+      --radius-md: 8px;
+      --radius-pill: 999px;
+
+      --shadow-soft: 0 8px 24px rgba(15, 23, 42, 0.12);
+      --shadow-chip: 0 2px 6px rgba(15, 23, 42, 0.12);
     }
 
     * {
@@ -20,24 +30,25 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
-      background: var(--bg-main);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #e0f4fb 0, #eef2f7 40%, #dde4f0 100%);
       margin: 0;
       padding: 0;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: stretch;
+      color: #0f172a;
     }
 
     .app-shell {
       background: #ffffff;
       width: 100%;
-      max-width: 1100px;
+      max-width: 1120px;
       height: 95vh;
-      margin: 10px;
-      border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      margin: 12px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
       display: flex;
       overflow: hidden;
       position: relative;
@@ -45,12 +56,30 @@
 
     /* LEFT SIDEBAR */
     .sidebar {
-      width: 260px;
-      background: var(--brand-primary);
+      width: 270px;
+      background: linear-gradient(180deg, #005f7f 0%, #003f55 40%, #002635 100%);
       color: #ffffff;
       display: flex;
       flex-direction: column;
-      padding: 16px;
+      padding: 18px 16px 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sidebar::before {
+      content: "";
+      position: absolute;
+      inset: -40px;
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .sidebar-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
 
     .sidebar-logo {
@@ -59,32 +88,42 @@
     }
 
     .sidebar-logo img {
-      max-width: 120px;
-      width: 35%;
+      max-width: 110px;
+      width: 40%;
       height: auto;
       border-radius: 50%;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+      border: 2px solid rgba(255, 255, 255, 0.75);
+      object-fit: cover;
     }
 
     .sidebar-title {
       font-size: 18px;
-      font-weight: bold;
-      margin-top: 8px;
+      font-weight: 700;
+      margin-top: 10px;
       text-align: center;
+      letter-spacing: 0.02em;
     }
 
     .sidebar-subtitle {
-      font-size: 12px;
+      font-size: 11px;
       text-align: center;
       margin-top: 4px;
-      color: #d1f2ff;
+      color: #d5f4ff;
+      line-height: 1.4;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      margin: 14px 0 12px;
     }
 
     .sidebar-section-title {
-      font-size: 13px;
+      font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-top: 18px;
+      letter-spacing: 0.12em;
+      margin-top: 4px;
       margin-bottom: 6px;
       opacity: 0.85;
     }
@@ -102,30 +141,43 @@
     .sidebar-nav button {
       width: 100%;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 8px 10px;
       text-align: left;
       font-size: 13px;
-      background: rgba(255,255,255,0.12);
-      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+      color: #e5f7ff;
       cursor: pointer;
-      transition: background 0.15s ease, transform 0.05s ease;
+      transition:
+        background 0.15s ease,
+        transform 0.06s ease,
+        box-shadow 0.15s ease;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.3);
     }
 
     .sidebar-nav button:hover {
-      background: rgba(255,255,255,0.22);
+      background: rgba(255, 255, 255, 0.22);
       transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.35);
     }
 
     .sidebar-footer {
       margin-top: auto;
       font-size: 11px;
-      opacity: 0.9;
+      opacity: 0.95;
+      padding-top: 10px;
+      border-top: 1px solid rgba(148, 163, 184, 0.4);
     }
 
     .sidebar-footer strong {
       display: block;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+
+    .sidebar-footer span {
+      display: block;
+      line-height: 1.4;
     }
 
     /* MAIN CONTENT */
@@ -137,21 +189,39 @@
     }
 
     .main-header {
-      padding: 10px 16px;
+      padding: 12px 18px 10px;
       border-bottom: 1px solid #e5e7eb;
-      background: #ffffff;
+      background: linear-gradient(90deg, #ffffff 0%, #f5fbff 50%, #ffffff 100%);
+    }
+
+    .main-title-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .main-title {
-      font-size: 18px;
-      font-weight: bold;
+      font-size: 19px;
+      font-weight: 700;
       color: var(--brand-primary-dark);
       margin: 0;
+      letter-spacing: 0.01em;
+    }
+
+    .main-badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--brand-accent);
+      background: rgba(6, 182, 212, 0.08);
+      color: #0f172a;
     }
 
     .main-subtitle {
       font-size: 13px;
-      margin: 2px 0 6px;
+      margin: 4px 0 8px;
       color: #4b5563;
     }
 
@@ -163,59 +233,117 @@
     }
 
     .pill-button {
-      border-radius: 999px;
+      border-radius: var(--radius-pill);
       border: 1px solid #d1d5db;
-      padding: 4px 10px;
+      padding: 4px 11px;
       font-size: 12px;
       background: #f9fafb;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: var(--shadow-chip);
+      transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.05s ease;
     }
 
     .pill-button:hover {
       background: #e5f6fb;
       border-color: var(--brand-accent);
+      transform: translateY(-1px);
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--brand-accent);
     }
 
     .chat-messages {
       flex: 1;
-      padding: 14px 16px;
+      padding: 16px 18px 10px;
       overflow-y: auto;
+      background: radial-gradient(circle at top center, #f5fbff 0, #f9fafb 40%, #f3f4f6 100%);
     }
 
     .message {
       margin-bottom: 12px;
-      padding: 8px 10px;
-      border-radius: 6px;
+      padding: 9px 11px;
+      border-radius: 9px;
       max-width: 90%;
-      line-height: 1.4;
+      line-height: 1.45;
       white-space: pre-wrap;
       font-size: 14px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+      animation: fadeInUp 0.15s ease-out;
     }
 
     .message.user {
       background: var(--brand-primary);
       color: #ffffff;
       margin-left: auto;
-      border-bottom-right-radius: 2px;
+      border-bottom-right-radius: 3px;
     }
 
     .message.bot {
       background: #e5e7eb;
       color: #111827;
       margin-right: auto;
-      border-bottom-left-radius: 2px;
+      border-bottom-left-radius: 3px;
     }
 
     .message.system {
       background: #fef9c3;
       border: 1px solid #facc15;
-      color: #824600;
+      color: #854d0e;
       font-size: 13px;
     }
 
+    .status-text {
+      font-size: 11px;
+      color: #6b7280;
+      padding: 0 16px 4px;
+      min-height: 16px;
+    }
+
+    .status-text span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--brand-accent);
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+    }
+
+    /* Typing dots */
+    .typing-dots {
+      display: inline-flex;
+      gap: 3px;
+      margin-left: 2px;
+    }
+
+    .typing-dots span {
+      width: 4px;
+      height: 4px;
+      border-radius: 999px;
+      background: #6b7280;
+      animation: blink 1s infinite ease-in-out;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.3s; }
+
+    /* Chat input area */
     .chat-input-area {
       display: flex;
-      padding: 10px;
+      padding: 10px 12px 12px;
       border-top: 1px solid #e5e7eb;
       background: #ffffff;
       gap: 8px;
@@ -223,64 +351,109 @@
 
     .chat-input-area input {
       flex: 1;
-      padding: 8px;
-      border-radius: 4px;
+      padding: 9px 10px;
+      border-radius: 7px;
       border: 1px solid #d1d5db;
       font-size: 14px;
+      background: #f9fafb;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .chat-input-area input:focus {
+      outline: none;
+      border-color: var(--brand-accent);
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.25);
+      background: #ffffff;
     }
 
     .chat-input-area button {
-      padding: 8px 16px;
+      padding: 0 16px;
       border: none;
-      border-radius: 4px;
-      background: var(--brand-primary);
+      border-radius: 7px;
+      background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
       color: white;
       font-size: 14px;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 72px;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.25);
+      transition:
+        background 0.15s ease,
+        transform 0.05s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .chat-input-area button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.3);
     }
 
     .chat-input-area button:disabled {
       background: #9ca3af;
       cursor: not-allowed;
-    }
-
-    .status-text {
-      font-size: 11px;
-      color: #6b7280;
-      padding: 0 12px 4px;
+      box-shadow: none;
     }
 
     /* LOGIN OVERLAY */
     .login-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(15, 23, 42, 0.6);
+      background: radial-gradient(circle at top, rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.75));
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 20;
+      backdrop-filter: blur(2px);
     }
 
     .login-card {
       background: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      padding: 20px 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 45px rgba(15, 23, 42, 0.55);
+      padding: 20px 22px 18px;
       width: 100%;
       max-width: 420px;
+      border: 1px solid #e5e7eb;
+      animation: fadeDown 0.18s ease-out;
+    }
+
+    .login-header-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .login-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      box-shadow: var(--shadow-chip);
+    }
+
+    .login-title-block {
+      flex: 1;
     }
 
     .login-title {
       font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 4px;
+      font-weight: 700;
+      margin-bottom: 2px;
       color: var(--brand-primary-dark);
     }
 
     .login-subtitle {
-      font-size: 13px;
+      font-size: 12px;
       color: #4b5563;
-      margin-bottom: 16px;
     }
 
     .login-field {
@@ -289,32 +462,53 @@
 
     .login-field label {
       display: block;
-      font-size: 13px;
+      font-size: 12px;
       margin-bottom: 3px;
+      color: #111827;
     }
 
     .login-field input {
       width: 100%;
       padding: 7px 8px;
-      border-radius: 4px;
+      border-radius: 6px;
       border: 1px solid #d1d5db;
       font-size: 14px;
+      background: #f9fafb;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .login-field input:focus {
+      outline: none;
+      border-color: var(--brand-accent);
+      background: #ffffff;
+      box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
     }
 
     .login-button {
       width: 100%;
       margin-top: 6px;
-      padding: 8px 0;
-      border-radius: 4px;
+      padding: 9px 0;
+      border-radius: 7px;
       border: none;
-      background: var(--brand-primary);
+      background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-dark) 100%);
       color: #ffffff;
       font-size: 14px;
       cursor: pointer;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.4);
+      transition:
+        transform 0.05s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .login-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.5);
     }
 
     .login-button:disabled {
       background: #9ca3af;
+      box-shadow: none;
       cursor: not-allowed;
     }
 
@@ -324,36 +518,98 @@
       color: #ffffff;
       background: var(--danger);
       padding: 6px 8px;
-      border-radius: 4px;
+      border-radius: 5px;
     }
 
+    .login-note {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0.2; transform: translateY(0); }
+      40% { opacity: 1; transform: translateY(-1px); }
+    }
+
+    /* RESPONSIVE */
     @media (max-width: 900px) {
       .app-shell {
         flex-direction: column;
         max-width: 100%;
+        height: 100vh;
+        margin: 0;
+        border-radius: 0;
       }
       .sidebar {
         width: 100%;
         flex-direction: row;
         align-items: center;
         height: auto;
+        padding: 10px 12px;
+      }
+      .sidebar-inner {
+        flex-direction: row;
+        align-items: center;
       }
       .sidebar-logo {
         margin-bottom: 0;
         margin-right: 10px;
       }
       .sidebar-logo img {
-        width: 65px;
-        max-width: 65px;
-      }
-      .sidebar-title, .sidebar-subtitle {
-        text-align: left;
+        width: 62px;
+        max-width: 62px;
       }
       .sidebar-main {
         flex: 1;
+        margin-left: 10px;
+      }
+      .sidebar-section-title {
+        display: none;
+      }
+      .sidebar-nav {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .sidebar-nav li {
+        margin-bottom: 0;
+      }
+      .sidebar-nav button {
+        padding: 6px 9px;
+        font-size: 11px;
       }
       .sidebar-footer {
         display: none;
+      }
+      .main-header {
+        padding: 10px 12px;
+      }
+      .chat-messages {
+        padding: 10px 12px;
       }
     }
   </style>
@@ -363,9 +619,14 @@
     <!-- LOGIN OVERLAY -->
     <div class="login-overlay" id="loginOverlay">
       <div class="login-card">
-        <div class="login-title">Coastline Training Login</div>
-        <div class="login-subtitle">
-          Please identify yourself so your safety training can be tracked.
+        <div class="login-header-row">
+          <div class="login-avatar">C</div>
+          <div class="login-title-block">
+            <div class="login-title">Coastline Training Login</div>
+            <div class="login-subtitle">
+              Please identify yourself so your safety training can be tracked.
+            </div>
+          </div>
         </div>
 
         <div class="login-field">
@@ -385,55 +646,74 @@
 
         <button class="login-button" id="loginButton">Start Training</button>
         <div class="login-error" id="loginError" style="display:none;"></div>
+        <div class="login-note">
+          This portal is for Coastline Family Medicine staff only. Training activity
+          may be reviewed by the Safety Officer and your supervisor.
+        </div>
       </div>
     </div>
 
-    <!-- A — LEFT SIDEBAR -->
+    <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
-      <div class="sidebar-logo">
-        <!-- Put your logo at static/cfm-logo.webp -->
-        <img src="/static/cfm-logo.webp" alt="Coastline Family Medicine logo" />
-        <div class="sidebar-title">Coastline Safety Bot</div>
-        <div class="sidebar-subtitle">
-          Coastline Family Medicine Safety &amp; Compliance Training Portal
+      <div class="sidebar-inner">
+        <div class="sidebar-logo">
+          <!-- Logo file: static/cfm-logo.webp -->
+          <img src="/static/cfm-logo.webp" alt="Coastline Family Medicine logo" />
+          <div class="sidebar-title">Coastline Safety Bot</div>
+          <div class="sidebar-subtitle">
+            Coastline Family Medicine Safety &amp; Compliance Training Portal
+          </div>
+          <div class="sidebar-divider"></div>
         </div>
-      </div>
 
-      <div class="sidebar-main">
-        <div class="sidebar-section-title">Training</div>
-        <ul class="sidebar-nav">
-          <li><button onclick="quickPrompt('Start new hire training')">Start New-Hire Training</button></li>
-          <li><button onclick="quickPrompt('Begin Bloodborne Pathogens training module')">Bloodborne Pathogens</button></li>
-          <li><button onclick="quickPrompt('Hazard Communication training for clinic staff')">Hazard Communication</button></li>
-          <li><button onclick="quickPrompt('Review PPE requirements for Coastline clinical staff')">PPE &amp; Exposure Control</button></li>
-        </ul>
+        <div class="sidebar-main">
+          <div class="sidebar-section-title">Training</div>
+          <ul class="sidebar-nav">
+            <li><button onclick="quickPrompt('Start new hire training')">Start New-Hire Training</button></li>
+            <li><button onclick="quickPrompt('Begin Bloodborne Pathogens training module')">Bloodborne Pathogens</button></li>
+            <li><button onclick="quickPrompt('Hazard Communication training for clinic staff')">Hazard Communication</button></li>
+            <li><button onclick="quickPrompt('Review PPE requirements for Coastline clinical staff')">PPE &amp; Exposure Control</button></li>
+          </ul>
 
-        <div class="sidebar-section-title">Quick Actions</div>
-        <ul class="sidebar-nav">
-          <li><button onclick="quickPrompt('How do I report a needlestick or exposure?')">Report Exposure</button></li>
-          <li><button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">Emergency Procedures</button></li>
-          <li><button onclick="quickPrompt('Give me a quick safety refresher in 3 bullet points.')">3-Minute Refresher</button></li>
-        </ul>
-      </div>
+          <div class="sidebar-section-title">Quick Actions</div>
+          <ul class="sidebar-nav">
+            <li><button onclick="quickPrompt('How do I report a needlestick or exposure?')">Report Exposure</button></li>
+            <li><button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">Emergency Procedures</button></li>
+            <li><button onclick="quickPrompt('Give me a quick safety refresher in 3 bullet points.')">3-Minute Refresher</button></li>
+          </ul>
+        </div>
 
-      <div class="sidebar-footer">
-        <strong>Contacts</strong>
-        Safety Officer: Cheyenne Yost<br />
-        Supervisor: Katie McKinney
+        <div class="sidebar-footer">
+          <strong>Contacts</strong>
+          <span>Safety Officer: Cheyenne Yost</span>
+          <span>Supervisor: Katie McKinney</span>
+        </div>
       </div>
     </aside>
 
     <!-- MAIN CHAT AREA -->
     <main class="main">
       <header class="main-header">
-        <h1 class="main-title">Coastline New Hire / Safety Training Bot</h1>
+        <div class="main-title-row">
+          <h1 class="main-title">Coastline New Hire / Safety Training Bot</h1>
+          <div class="main-badge">Internal – Coastline Family Medicine</div>
+        </div>
         <p class="main-subtitle">
-          Use this portal to complete your new-hire safety training or ask any Coastline safety question.
+          Complete your new-hire safety training or ask any Coastline safety question.
         </p>
         <div class="pill-row">
-          <button class="pill-button" onclick="quickPrompt('Start new hire training')">Start training</button>
-          <button class="pill-button" onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">Safety overview</button>
-          <button class="pill-button" onclick="quickPrompt('What should I do right after a needlestick?')">Needlestick steps</button>
+          <button class="pill-button" onclick="quickPrompt('Start new hire training')">
+            <span class="pill-dot"></span>
+            Start training
+          </button>
+          <button class="pill-button" onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">
+            <span class="pill-dot"></span>
+            Safety overview
+          </button>
+          <button class="pill-button" onclick="quickPrompt('What should I do right after a needlestick?')">
+            <span class="pill-dot"></span>
+            Needlestick steps
+          </button>
         </div>
       </header>
 
@@ -443,6 +723,7 @@ Hi! I’m the Coastline Family Medicine safety training bot.
 Once you log in, you can say “Start new hire training” or ask a specific safety question.
         </div>
       </div>
+
       <div class="status-text" id="statusText"></div>
 
       <div class="chat-input-area">
@@ -457,10 +738,10 @@ Once you log in, you can say “Start new hire training” or ask a specific saf
   </div>
 
   <script>
-    const messagesDiv = document.getElementById("chatMessages");
-    const userInput   = document.getElementById("userInput");
-    const sendButton  = document.getElementById("sendButton");
-    const statusText  = document.getElementById("statusText");
+    const messagesDiv  = document.getElementById("chatMessages");
+    const userInput    = document.getElementById("userInput");
+    const sendButton   = document.getElementById("sendButton");
+    const statusText   = document.getElementById("statusText");
 
     const loginOverlay = document.getElementById("loginOverlay");
     const loginButton  = document.getElementById("loginButton");
@@ -482,8 +763,20 @@ Once you log in, you can say “Start new hire training” or ask a specific saf
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    function setStatus(text) {
-      statusText.textContent = text || "";
+    function setStatus(text, isTyping = false) {
+      if (!text) {
+        statusText.textContent = "";
+        statusText.innerHTML = "";
+        return;
+      }
+      if (isTyping) {
+        statusText.innerHTML =
+          '<span><span class="status-dot"></span>' +
+          text +
+          '<span class="typing-dots"><span></span><span></span><span></span></span></span>';
+      } else {
+        statusText.textContent = text;
+      }
     }
 
     function quickPrompt(text) {
@@ -552,7 +845,7 @@ Once you log in, you can say “Start new hire training” or ask a specific saf
       addMessage(text, "user");
       userInput.value = "";
       sendButton.disabled = true;
-      setStatus("Contacting Coastline Safety Bot...");
+      setStatus("Contacting Coastline Safety Bot...", true);
 
       try {
         const res = await fetch("/chat", {
@@ -568,7 +861,6 @@ Once you log in, you can say “Start new hire training” or ask a specific saf
 
         if (data.reply) {
           addMessage(data.reply, "bot");
-          // Save this turn in history
           history.push({ user: text, assistant: data.reply });
         } else if (data.error) {
           addMessage("Error: " + data.error, "bot");
@@ -586,7 +878,7 @@ Once you log in, you can say “Start new hire training” or ask a specific saf
 
     loginButton.addEventListener("click", doLogin);
     empNameInput.addEventListener("keypress", e => { if (e.key === "Enter") doLogin(); });
-    empIdInput.addEventListener("keypress", e => { if (e.key === "Enter") doLogin(); });
+    empIdInput.addEventListener("keypress",   e => { if (e.key === "Enter") doLogin(); });
     empRoleInput.addEventListener("keypress", e => { if (e.key === "Enter") doLogin(); });
 
     sendButton.addEventListener("click", sendMessage);
@@ -598,8 +890,3 @@ Once you log in, you can say “Start new hire training” or ask a specific saf
   </script>
 </body>
 </html>
-
-
-
-
-
