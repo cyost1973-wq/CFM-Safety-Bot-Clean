@@ -4,195 +4,456 @@
   <meta charset="UTF-8" />
   <title>Coastline New Hire / Safety Training Bot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    :root {
+      --brand-primary: #005f7f;
+      --brand-primary-dark: #00445b;
+      --brand-accent: #00a3c4;
+      --brand-soft: #e0f4fb;
+      --bg-main: #f3f4f6;
+      --bg-chat: #f9fafb;
+      --danger: #b91c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg-main);
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .app-shell {
+      background: #ffffff;
+      width: 100%;
+      max-width: 1100px;
+      height: 95vh;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* LEFT SIDEBAR */
+    .sidebar {
+      width: 260px;
+      background: var(--brand-primary);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+    }
+
+    .sidebar-logo {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-logo img {
+      max-width: 120px;
+      width: 35%;
+      height: auto;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    }
+
+    .sidebar-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .sidebar-subtitle {
+      font-size: 12px;
+      text-align: center;
+      margin-top: 4px;
+      color: #d1f2ff;
+    }
+
+    .sidebar-section-title {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 18px;
+      margin-bottom: 6px;
+      opacity: 0.85;
+    }
+
+    .sidebar-nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-nav li {
+      margin-bottom: 6px;
+    }
+
+    .sidebar-nav button {
+      width: 100%;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 13px;
+      background: rgba(255,255,255,0.12);
+      color: #ffffff;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.05s ease;
+    }
+
+    .sidebar-nav button:hover {
+      background: rgba(255,255,255,0.22);
+      transform: translateY(-1px);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      font-size: 11px;
+      opacity: 0.9;
+    }
+
+    .sidebar-footer strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* MAIN CONTENT */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-chat);
+    }
+
+    .main-header {
+      padding: 10px 16px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #ffffff;
+    }
+
+    .main-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--brand-primary-dark);
+      margin: 0;
+    }
+
+    .main-subtitle {
+      font-size: 13px;
+      margin: 2px 0 6px;
+      color: #4b5563;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .pill-button {
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 4px 10px;
+      font-size: 12px;
+      background: #f9fafb;
+      cursor: pointer;
+    }
+
+    .pill-button:hover {
+      background: #e5f6fb;
+      border-color: var(--brand-accent);
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 14px 16px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 12px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      max-width: 90%;
+      line-height: 1.4;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+
+    .message.user {
+      background: var(--brand-primary);
+      color: #ffffff;
+      margin-left: auto;
+      border-bottom-right-radius: 2px;
+    }
+
+    .message.bot {
+      background: #e5e7eb;
+      color: #111827;
+      margin-right: auto;
+      border-bottom-left-radius: 2px;
+    }
+
+    .message.system {
+      background: #fef9c3;
+      border: 1px solid #facc15;
+      color: #824600;
+      font-size: 13px;
+    }
+
+    .chat-input-area {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #e5e7eb;
+      background: #ffffff;
+      gap: 8px;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+
+    .chat-input-area button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      background: var(--brand-primary);
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .chat-input-area button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .status-text {
+      font-size: 11px;
+      color: #6b7280;
+      padding: 0 12px 4px;
+    }
+
+    /* LOGIN OVERLAY */
+    .login-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .login-card {
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      padding: 20px 24px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .login-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: var(--brand-primary-dark);
+    }
+
+    .login-subtitle {
+      font-size: 13px;
+      color: #4b5563;
+      margin-bottom: 16px;
+    }
+
+    .login-field {
+      margin-bottom: 10px;
+    }
+
+    .login-field label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .login-field input {
+      width: 100%;
+      padding: 7px 8px;
+      border-radius: 4px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+    }
+
+    .login-button {
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px 0;
+      border-radius: 4px;
+      border: none;
+      background: var(--brand-primary);
+      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .login-button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+
+    .login-error {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #ffffff;
+      background: var(--danger);
+      padding: 6px 8px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .app-shell {
+        flex-direction: column;
+        max-width: 100%;
+      }
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        height: auto;
+      }
+      .sidebar-logo {
+        margin-bottom: 0;
+        margin-right: 10px;
+      }
+      .sidebar-logo img {
+        width: 65px;
+        max-width: 65px;
+      }
+      .sidebar-title, .sidebar-subtitle {
+        text-align: left;
+      }
+      .sidebar-main {
+        flex: 1;
+      }
+      .sidebar-footer {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="app-shell">
-    <!-- LEFT SIDEBAR -->
+    <!-- LOGIN OVERLAY -->
+    <div class="login-overlay" id="loginOverlay">
+      <div class="login-card">
+        <div class="login-title">Coastline Training Login</div>
+        <div class="login-subtitle">
+          Please identify yourself so your safety training can be tracked.
+        </div>
+
+        <div class="login-field">
+          <label for="empName">Full name</label>
+          <input id="empName" type="text" placeholder="e.g., Jane Smith" />
+        </div>
+
+        <div class="login-field">
+          <label for="empId">Employee ID</label>
+          <input id="empId" type="text" placeholder="e.g., 12345" />
+        </div>
+
+        <div class="login-field">
+          <label for="empRole">Role (optional)</label>
+          <input id="empRole" type="text" placeholder="e.g., MA, RN, Front Desk" />
+        </div>
+
+        <button class="login-button" id="loginButton">Start Training</button>
+        <div class="login-error" id="loginError" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- A — LEFT SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-logo">
         <!-- Put your logo at static/cfm-logo.webp -->
-        <img src="{{ url_for('static', filename='cfm-logo.webp') }}"
-             alt="Coastline Family Medicine Logo">
+        <img src="/static/cfm-logo.webp" alt="Coastline Family Medicine logo" />
         <div class="sidebar-title">Coastline Safety Bot</div>
         <div class="sidebar-subtitle">
-          Coastline Family Medicine Safety &amp;<br>
-          Compliance Training Portal
+          Coastline Family Medicine Safety &amp; Compliance Training Portal
         </div>
       </div>
 
       <div class="sidebar-main">
         <div class="sidebar-section-title">Training</div>
         <ul class="sidebar-nav">
-          <li>
-            <button class="primary" onclick="quickPrompt('Start full new-hire safety training sequence.')">
-              <span>Start Full Training</span>
-              <span class="badge">New hire</span>
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Begin Bloodborne Pathogens module.')">
-              <span>Bloodborne Pathogens</span>
-              <span class="badge">BBP</span>
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Start Hazard Communication training for Coastline staff.')">
-              <span>Hazard Communication</span>
-              <span class="badge">HazCom</span>
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Review PPE and exposure control procedures for Coastline Family Medicine.')">
-              <span>PPE &amp; Exposure Control</span>
-              <span class="badge">PPE</span>
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Fire safety and emergency action plan training.')">
-              <span>Fire &amp; Emergency Plan</span>
-              <span class="badge">EAP</span>
-            </button>
-          </li>
+          <li><button onclick="quickPrompt('Start new hire training')">Start New-Hire Training</button></li>
+          <li><button onclick="quickPrompt('Begin Bloodborne Pathogens training module')">Bloodborne Pathogens</button></li>
+          <li><button onclick="quickPrompt('Hazard Communication training for clinic staff')">Hazard Communication</button></li>
+          <li><button onclick="quickPrompt('Review PPE requirements for Coastline clinical staff')">PPE &amp; Exposure Control</button></li>
         </ul>
 
         <div class="sidebar-section-title">Quick Actions</div>
         <ul class="sidebar-nav">
-          <li>
-            <button onclick="quickPrompt('How do I report a needlestick or blood/body fluid exposure at Coastline?')">
-              <span>Report Exposure / Needlestick</span>
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">
-              <span>Emergency Procedures</span>
-            </button>
-          </li>
-          <li>
-            <button onclick="quickPrompt('Give me a 3-minute safety refresher with key points only.')">
-              <span>3-Minute Refresher</span>
-            </button>
-          </li>
+          <li><button onclick="quickPrompt('How do I report a needlestick or exposure?')">Report Exposure</button></li>
+          <li><button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">Emergency Procedures</button></li>
+          <li><button onclick="quickPrompt('Give me a quick safety refresher in 3 bullet points.')">3-Minute Refresher</button></li>
         </ul>
       </div>
 
       <div class="sidebar-footer">
         <strong>Contacts</strong>
-        Safety Officer: Cheyenne Yost<br>
-        Supervisor: Katie McKinney<br>
-        Use this portal for training questions and OSHA safety topics only.
+        Safety Officer: Cheyenne Yost<br />
+        Supervisor: Katie McKinney
       </div>
     </aside>
 
-    <!-- MAIN CHAT COLUMN -->
+    <!-- MAIN CHAT AREA -->
     <main class="main">
       <header class="main-header">
         <h1 class="main-title">Coastline New Hire / Safety Training Bot</h1>
         <p class="main-subtitle">
-          Complete your required OSHA safety modules or ask a Coastline safety question at any time.
+          Use this portal to complete your new-hire safety training or ask any Coastline safety question.
         </p>
-
-        <div class="progress-row">
-          <span class="progress-label" id="progressLabel">
-            New-hire training progress
-          </span>
-          <span class="progress-badge" id="progressBadge">
-            0% complete
-          </span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
-
-        <div class="pill-row" style="margin-top: 6px;">
-          <button class="pill-button"
-                  onclick="quickPrompt('Start full new-hire safety training sequence.')">
-            Start full training
-          </button>
-          <button class="pill-button"
-                  onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">
-            Safety overview
-          </button>
-          <button class="pill-button"
-                  onclick="quickPrompt('What should I do immediately after a needlestick?')">
-            Needlestick steps
-          </button>
+        <div class="pill-row">
+          <button class="pill-button" onclick="quickPrompt('Start new hire training')">Start training</button>
+          <button class="pill-button" onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">Safety overview</button>
+          <button class="pill-button" onclick="quickPrompt('What should I do right after a needlestick?')">Needlestick steps</button>
         </div>
       </header>
-
-      <div id="errorBanner" class="error-banner"></div>
 
       <div class="chat-messages" id="chatMessages">
         <div class="message bot system">
 Hi! I’m the Coastline Family Medicine safety training bot.
-You can say “Start full training” or ask a specific safety question (e.g., “How do I report a needlestick?”).
+Once you log in, you can say “Start new hire training” or ask a specific safety question.
         </div>
       </div>
-
       <div class="status-text" id="statusText"></div>
 
       <div class="chat-input-area">
         <input
           type="text"
           id="userInput"
-          placeholder="Type your question or say 'Start full training'..."
+          placeholder="Type your question or say 'Start new hire training'..."
         />
-        <button id="sendButton">
-          <span>Send</span>
-          <span>➤</span>
-        </button>
+        <button id="sendButton">Send</button>
       </div>
     </main>
-
-    <!-- RIGHT CONTEXT PANEL -->
-    <aside class="right-panel">
-      <div class="right-panel-header">
-        <div class="right-status">
-          <span class="status-dot"></span>
-          <span id="botStatusText">Bot online — training ready</span>
-        </div>
-        <div class="right-panel-tabs">
-          Current module, key points &amp; transcript
-        </div>
-      </div>
-
-      <!-- Current module card -->
-      <section class="card" id="cardCurrentModule">
-        <div class="card-title">Current Module</div>
-        <div class="card-muted" id="currentModuleName">
-          New-Hire Training Sequence
-        </div>
-        <p class="card-muted" id="currentModuleDescription">
-          You’re beginning the full Coastline new-hire safety training,
-          including BBP, HazCom, PPE, workplace violence, and emergency procedures.
-        </p>
-        <div class="card-pill-row">
-          <span class="card-pill">BBP</span>
-          <span class="card-pill">HazCom</span>
-          <span class="card-pill">PPE</span>
-          <span class="card-pill">EAP</span>
-        </div>
-      </section>
-
-      <!-- Checklist card -->
-      <section class="card" id="cardChecklist">
-        <div class="card-title">Checklist for New Hires</div>
-        <ul class="card-list" id="checklistItems">
-          <li>Complete full new-hire safety training modules.</li>
-          <li>Know how to report an exposure or incident.</li>
-          <li>Know where to find Coastline policies &amp; procedures.</li>
-        </ul>
-      </section>
-
-      <!-- Session snapshot card -->
-      <section class="card" id="cardSnapshot">
-        <div class="card-title">Session Snapshot</div>
-        <p class="card-muted" id="sessionSnapshot">
-          Key training messages can be summarized here later, so you can
-          review what you’ve already covered in this session.
-        </p>
-      </section>
-    </aside>
   </div>
 
   <script>
@@ -200,9 +461,17 @@ You can say “Start full training” or ask a specific safety question (e.g., �
     const userInput   = document.getElementById("userInput");
     const sendButton  = document.getElementById("sendButton");
     const statusText  = document.getElementById("statusText");
-    const errorBanner = document.getElementById("errorBanner");
-    const typingId    = "typing-indicator";
 
+    const loginOverlay = document.getElementById("loginOverlay");
+    const loginButton  = document.getElementById("loginButton");
+    const loginError   = document.getElementById("loginError");
+    const empNameInput = document.getElementById("empName");
+    const empIdInput   = document.getElementById("empId");
+    const empRoleInput = document.getElementById("empRole");
+
+    let isLoggedIn = false;
+
+    // Conversation history we send to the backend for better context
     const history = [];
 
     function addMessage(text, sender) {
@@ -213,97 +482,124 @@ You can say “Start full training” or ask a specific safety question (e.g., �
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    function showTyping() {
-      removeTyping();
-      const wrapper = document.createElement("div");
-      wrapper.classList.add("message", "bot");
-      wrapper.id = typingId;
-
-      const dots = document.createElement("div");
-      dots.classList.add("typing-indicator");
-      for (let i = 0; i < 3; i++) {
-        const dot = document.createElement("span");
-        dot.classList.add("typing-dot");
-        dots.appendChild(dot);
-      }
-      wrapper.appendChild(dots);
-      messagesDiv.appendChild(wrapper);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    function removeTyping() {
-      const existing = document.getElementById(typingId);
-      if (existing) existing.remove();
-    }
-
     function setStatus(text) {
       statusText.textContent = text || "";
     }
 
-    function showError(text) {
-      if (!text) {
-        errorBanner.style.display = "none";
-        errorBanner.textContent = "";
-      } else {
-        errorBanner.style.display = "block";
-        errorBanner.textContent = text;
-      }
-    }
-
     function quickPrompt(text) {
+      if (!isLoggedIn) {
+        setStatus("Please log in first so we can track your training.");
+        return;
+      }
       userInput.value = text;
       sendMessage();
+    }
+
+    async function doLogin() {
+      const name = empNameInput.value.trim();
+      const id   = empIdInput.value.trim();
+      const role = empRoleInput.value.trim();
+
+      loginError.style.display = "none";
+      loginError.textContent = "";
+
+      if (!name || !id) {
+        loginError.textContent = "Full name and Employee ID are required.";
+        loginError.style.display = "block";
+        return;
+      }
+
+      loginButton.disabled = true;
+
+      try {
+        const res = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            employee_name: name,
+            employee_id: id,
+            role: role
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+          loginError.textContent = data.error || "Login failed. Please try again.";
+          loginError.style.display = "block";
+        } else {
+          isLoggedIn = true;
+          loginOverlay.style.display = "none";
+          addMessage(`Welcome, ${name}! I’ll track your Coastline safety training under ID ${id}.`, "bot");
+        }
+      } catch (err) {
+        console.error(err);
+        loginError.textContent = "Network error during login. Please try again.";
+        loginError.style.display = "block";
+      } finally {
+        loginButton.disabled = false;
+      }
     }
 
     async function sendMessage() {
       const text = userInput.value.trim();
       if (!text) return;
 
+      if (!isLoggedIn) {
+        setStatus("Please log in first so we can track your training.");
+        return;
+      }
+
       addMessage(text, "user");
       userInput.value = "";
       sendButton.disabled = true;
-      setStatus("Contacting Coastline Safety Bot…");
-      showError("");
-      showTyping();
+      setStatus("Contacting Coastline Safety Bot...");
 
       try {
         const res = await fetch("/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text, history }),
+          body: JSON.stringify({
+            message: text,
+            history: history
+          }),
         });
 
         const data = await res.json();
-        removeTyping();
 
         if (data.reply) {
           addMessage(data.reply, "bot");
+          // Save this turn in history
           history.push({ user: text, assistant: data.reply });
-
-          // TODO: optional: parse data.meta to update progress, right panel, etc.
-          // For now we just keep UI static.
         } else if (data.error) {
-          showError("Error: " + data.error);
+          addMessage("Error: " + data.error, "bot");
         } else {
-          showError("Unexpected response from server.");
+          addMessage("Unexpected response from server.", "bot");
         }
       } catch (err) {
         console.error(err);
-        removeTyping();
-        showError("Network error trying to reach the server.");
+        addMessage("Network error trying to reach the server.", "bot");
       } finally {
         sendButton.disabled = false;
         setStatus("");
       }
     }
 
+    loginButton.addEventListener("click", doLogin);
+    empNameInput.addEventListener("keypress", e => { if (e.key === "Enter") doLogin(); });
+    empIdInput.addEventListener("keypress", e => { if (e.key === "Enter") doLogin(); });
+    empRoleInput.addEventListener("keypress", e => { if (e.key === "Enter") doLogin(); });
+
     sendButton.addEventListener("click", sendMessage);
     userInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendMessage();
+      if (e.key === "Enter") {
+        sendMessage();
+      }
     });
   </script>
 </body>
 </html>
+
+
 
 
 
