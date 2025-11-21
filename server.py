@@ -244,11 +244,40 @@ def download_log():
     if not os.path.exists(TRAINING_LOG_PATH):
         return "No log file found yet.", 404
 
+
+@app.route("/admin/log", methods=["GET"])
+def admin_log():
+    """
+    Simple admin viewer for the training_log.csv file.
+    Shows the most recent rows first.
+    """
+    rows = []
+    if os.path.exists(TRAINING_LOG_PATH):
+        try:
+            with open(TRAINING_LOG_PATH, newline="", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                for row in reader:
+                    rows.append({
+                        "timestamp": row.get("timestamp", ""),
+                        "employee_id": row.get("employee_id", ""),
+                        "employee_name": row.get("employee_name", ""),
+                        "role": row.get("role", ""),
+                        "user_message": row.get("user_message", ""),
+                        "bot_reply": row.get("bot_reply", ""),
+                    })
+            # most recent first
+            rows.reverse()
+        except Exception as e:
+            print("Error reading training log:", e)
+
+    return render_template("admin.html", rows=rows)
+
 # -----------------------------------------
 #  ENTRY POINT
 # -----------------------------------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
 
 
 
