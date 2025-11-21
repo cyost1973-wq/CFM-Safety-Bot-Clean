@@ -6,15 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
-      /* Coastline custom theme */
+      /* Coastline theme */
       --brand-primary: #005f7f;
-      --brand-primary-dark: #00384f;
-      --brand-accent: #00b3d4;
-      --brand-accent-soft: #e0f7fc;
-      --brand-bg: #f1f5f9;
+      --brand-primary-dark: #00394f;
+      --brand-accent: #00b4c8;
+      --brand-soft: #e1f4f8;
       --brand-danger: #b91c1c;
-      --brand-danger-soft: #fee2e2;
-      --text-main: #111827;
+      --bg-main: #f3f4f6;
+      --bg-chat: #f9fafb;
+      --card-bg: #ffffff;
+      --border-subtle: #e5e7eb;
       --text-muted: #6b7280;
     }
 
@@ -24,23 +25,27 @@
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      background: var(--brand-bg);
       margin: 0;
       padding: 0;
+      background: radial-gradient(circle at top left, #e0f4fb 0, #f3f4f6 45%, #eef2ff 100%);
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: stretch;
+      color: #111827;
     }
 
+    /* App shell */
     .app-shell {
-      background: #ffffff;
       width: 100%;
-      max-width: 1100px;
-      height: 95vh;
-      margin: 10px;
-      border-radius: 14px;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+      max-width: 1200px;
+      height: 96vh;
+      margin: 8px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.18),
+        0 0 0 1px rgba(148, 163, 184, 0.25);
       display: flex;
       overflow: hidden;
     }
@@ -48,40 +53,39 @@
     /* LEFT SIDEBAR */
     .sidebar {
       width: 260px;
-      background: radial-gradient(circle at top left, #00b3d4 0, #005f7f 40%, #00384f 100%);
+      background: linear-gradient(165deg, var(--brand-primary-dark), var(--brand-primary));
       color: #ffffff;
       display: flex;
       flex-direction: column;
-      padding: 16px;
+      padding: 16px 16px 14px;
     }
 
     .sidebar-logo {
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 12px;
     }
 
-    .logo-img {
-      width: clamp(72px, 35%, 110px);
-      max-width: 110px;
+    .sidebar-logo img {
+      display: block;
+      margin: 0 auto 6px;
+      width: min(42vw, 120px); /* auto-adjusts on narrow screens */
+      max-width: 120px;
       height: auto;
-      border-radius: 50%;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
-      object-fit: cover;
+      border-radius: 999px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.38);
     }
 
     .sidebar-title {
       font-size: 18px;
       font-weight: 700;
-      margin-top: 10px;
-      text-align: center;
+      letter-spacing: 0.03em;
     }
 
     .sidebar-subtitle {
-      font-size: 12px;
-      text-align: center;
-      margin-top: 4px;
-      color: #dbeafe;
-      line-height: 1.4;
+      font-size: 11px;
+      margin-top: 2px;
+      color: #d7f4ff;
+      opacity: 0.95;
     }
 
     .sidebar-section-title {
@@ -90,7 +94,7 @@
       letter-spacing: 0.08em;
       margin-top: 20px;
       margin-bottom: 6px;
-      opacity: 0.9;
+      opacity: 0.85;
     }
 
     .sidebar-nav {
@@ -107,36 +111,56 @@
       width: 100%;
       border: none;
       border-radius: 8px;
-      padding: 9px 11px;
+      padding: 8px 10px;
       text-align: left;
       font-size: 13px;
-      background: rgba(255,255,255,0.12);
+      background: rgba(255, 255, 255, 0.12);
       color: #ffffff;
       cursor: pointer;
-      transition: background 0.15s ease, transform 0.05s ease, box-shadow 0.15s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+      transition:
+        background 0.16s ease,
+        transform 0.06s ease,
+        box-shadow 0.12s ease;
+    }
+
+    .sidebar-nav button span.label {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar-nav button span.badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
     }
 
     .sidebar-nav button:hover {
-      background: rgba(255,255,255,0.22);
+      background: rgba(255, 255, 255, 0.22);
       transform: translateY(-1px);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.25);
     }
 
     .sidebar-nav button.primary {
       background: #ffffff;
       color: var(--brand-primary-dark);
-      font-weight: 600;
     }
 
     .sidebar-nav button.primary:hover {
-      background: #e0f2fe;
+      background: #f1fbff;
     }
 
     .sidebar-footer {
       margin-top: auto;
       font-size: 11px;
-      opacity: 0.9;
-      border-top: 1px solid rgba(255,255,255,0.25);
+      opacity: 0.92;
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
       padding-top: 8px;
     }
 
@@ -146,26 +170,35 @@
       font-weight: 600;
     }
 
-    /* MAIN CONTENT */
+    .sidebar-footer .tagline {
+      font-size: 10px;
+      opacity: 0.9;
+    }
+
+    /* MAIN AREA */
     .main {
       flex: 1;
       display: flex;
       flex-direction: column;
-      background: var(--brand-bg);
+      background: var(--bg-main);
     }
 
     .main-header {
-      padding: 10px 16px 8px;
-      border-bottom: 1px solid #e5e7eb;
-      background: #ffffff;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at top right, #e0f2fe 0, #ffffff 50%);
     }
 
-    .main-title-row {
+    .header-row {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: baseline;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
+    }
+
+    .header-titles {
+      min-width: 0;
     }
 
     .main-title {
@@ -181,20 +214,40 @@
       color: var(--text-muted);
     }
 
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand-primary-dark);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+    }
+
     /* Progress bar */
-    .progress-wrapper {
+    .progress-shell {
       margin-top: 6px;
     }
 
-    .progress-label {
-      font-size: 11px;
-      color: var(--text-muted);
+    .progress-label-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
     }
 
-    .progress-bar {
+    .progress-track {
       width: 100%;
       height: 7px;
       border-radius: 999px;
@@ -202,73 +255,65 @@
       overflow: hidden;
     }
 
-    .progress-bar-fill {
+    .progress-fill {
       height: 100%;
       width: 0%;
       background: linear-gradient(90deg, var(--brand-accent), var(--brand-primary));
       transition: width 0.25s ease-out;
     }
 
-    .pill-row {
-      margin-top: 8px;
+    /* Main content layout: chat + context column */
+    .main-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(260px, 1.4fr);
+      gap: 10px;
+      padding: 10px 12px 12px;
+      min-height: 0;
+    }
+
+    .panel {
+      background: var(--bg-chat);
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
       display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+      flex-direction: column;
+      min-height: 0;
     }
 
-    .pill-button {
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      padding: 4px 10px;
-      font-size: 12px;
-      background: #f9fafb;
-      cursor: pointer;
-      color: #374151;
-      display: inline-flex;
+    .panel-header {
+      padding: 8px 11px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 4px;
+      color: #111827;
+      background: #ffffff;
     }
 
-    .pill-button:hover {
-      background: #e0f2fe;
-      border-color: var(--brand-accent);
+    .panel-title-muted {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
-    .pill-badge {
-      background: var(--brand-accent-soft);
-      color: var(--brand-primary-dark);
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      text-transform: uppercase;
-    }
-
-    /* Error banner */
-    .error-banner {
-      display: none;
-      background: var(--brand-danger-soft);
-      color: var(--brand-danger);
-      padding: 6px 12px;
-      font-size: 12px;
-      border-bottom: 1px solid #fecaca;
-    }
-
-    /* Chat area */
+    /* Chat panel */
     .chat-messages {
       flex: 1;
-      padding: 14px 16px;
+      padding: 12px 12px 6px;
       overflow-y: auto;
     }
 
     .message {
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       padding: 8px 10px;
-      border-radius: 10px;
-      max-width: 90%;
-      line-height: 1.5;
+      border-radius: 7px;
+      max-width: 92%;
+      line-height: 1.4;
       white-space: pre-wrap;
       font-size: 14px;
-      box-shadow: 0 1px 3px rgba(15,23,42,0.1);
     }
 
     .message.user {
@@ -279,8 +324,8 @@
     }
 
     .message.bot {
-      background: #ffffff;
-      color: var(--text-main);
+      background: #e5e7eb;
+      color: #111827;
       margin-right: auto;
       border-bottom-left-radius: 2px;
     }
@@ -288,139 +333,179 @@
     .message.system {
       background: #fef9c3;
       border: 1px solid #facc15;
-      color: #78350f;
+      color: #854d0e;
       font-size: 13px;
     }
 
-    .message.typing {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 13px;
-      color: #4b5563;
-    }
-
-    .typing-dots {
-      display: inline-flex;
-      gap: 2px;
-    }
-
-    .typing-dots span {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: #9ca3af;
-      animation: blink 1s infinite ease-in-out;
-    }
-
-    .typing-dots span:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-    .typing-dots span:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    @keyframes blink {
-      0%, 60%, 100% { opacity: 0.2; }
-      30% { opacity: 1; }
-    }
-
-    /* Status text under chat */
-    .status-text {
+    .typing-indicator {
+      display: none;
       font-size: 11px;
       color: var(--text-muted);
-      padding: 0 12px 4px;
+      padding: 0 12px 6px;
+      font-style: italic;
     }
 
-    /* Input area */
+    /* Error banner */
+    .error-banner {
+      display: none;
+      margin: 0 10px 6px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      background: #fef2f2;
+      color: var(--brand-danger);
+      border: 1px solid #fecaca;
+    }
+
+    /* Chat input */
     .chat-input-area {
       display: flex;
-      padding: 8px 10px;
-      border-top: 1px solid #e5e7eb;
+      padding: 8px;
+      border-top: 1px solid var(--border-subtle);
       background: #ffffff;
       gap: 8px;
     }
 
     .chat-input-area input {
       flex: 1;
-      padding: 8px 10px;
+      padding: 7px 9px;
       border-radius: 999px;
       border: 1px solid #d1d5db;
       font-size: 14px;
-      outline: none;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .chat-input-area input:focus {
-      border-color: var(--brand-accent);
-      box-shadow: 0 0 0 2px rgba(59,130,246,0.25);
     }
 
     .chat-input-area button {
-      padding: 8px 16px;
+      padding: 7px 16px;
       border: none;
       border-radius: 999px;
       background: var(--brand-primary);
       color: white;
       font-size: 14px;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+      white-space: nowrap;
+      transition: background 0.12s ease, transform 0.05s ease;
+    }
+
+    .chat-input-area button:hover:not(:disabled) {
+      background: var(--brand-primary-dark);
+      transform: translateY(-1px);
     }
 
     .chat-input-area button:disabled {
       background: #9ca3af;
       cursor: not-allowed;
+      transform: none;
     }
 
-    .send-icon {
-      font-size: 14px;
+    .status-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 0 12px 4px;
     }
 
-    /* Responsive tweaks */
-    @media (max-width: 900px) {
+    /* Context / side panel */
+    .context-body {
+      flex: 1;
+      padding: 8px 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .context-card {
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      padding: 8px 9px;
+      font-size: 12px;
+    }
+
+    .context-card h3 {
+      margin: 0 0 4px;
+      font-size: 13px;
+      color: #111827;
+    }
+
+    .context-card ul {
+      margin: 4px 0 0;
+      padding-left: 18px;
+    }
+
+    .context-tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand-primary-dark);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .mini-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .mini-pill {
+      font-size: 10px;
+      border-radius: 999px;
+      padding: 2px 6px;
+      background: #f3f4f6;
+      color: var(--text-muted);
+    }
+
+    /* Mobile / narrow screens */
+    @media (max-width: 1000px) {
       .app-shell {
         flex-direction: column;
-        max-width: 100%;
+        height: auto;
+        min-height: 100vh;
       }
-
       .sidebar {
         width: 100%;
         flex-direction: row;
         align-items: center;
-        height: auto;
-        padding: 10px;
+        flex-wrap: wrap;
       }
-
       .sidebar-logo {
-        margin-bottom: 0;
-        margin-right: 10px;
+        margin-bottom: 4px;
+        margin-right: 12px;
+        text-align: left;
       }
-
-      .logo-img {
-        width: 60px;
-        max-width: 60px;
+      .sidebar-title,
+      .sidebar-subtitle {
+        text-align: left;
       }
-
       .sidebar-main {
         flex: 1;
+        margin-left: 10px;
       }
-
       .sidebar-footer {
         display: none;
       }
+      .main-body {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto auto;
+      }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       .main-header {
         padding: 8px 10px;
       }
-      .main-title {
-        font-size: 16px;
+      .app-shell {
+        margin: 0;
+        border-radius: 0;
       }
-      .sidebar-subtitle {
-        display: none; /* keep it clean on very small screens */
+      .sidebar {
+        padding: 10px 10px 8px;
+      }
+      .sidebar-logo img {
+        width: min(32vw, 90px);
       }
     }
   </style>
@@ -430,8 +515,8 @@
     <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-logo">
-        <!-- Place your file at: static/Final+-+Regina+Yost-1920w.webp -->
-        <img src="/static/Final+-+Regina+Yost-1920w.webp" alt="Coastline Family Medicine logo" class="logo-img" />
+        <!-- Ensure this file exists: static/cfm-logo.webp -->
+        <img src="/static/cfm-logo.webp" alt="Coastline Family Medicine logo" />
         <div class="sidebar-title">Coastline Safety Bot</div>
         <div class="sidebar-subtitle">
           Coastline Family Medicine Safety &amp; Compliance Training Portal
@@ -442,148 +527,187 @@
         <div class="sidebar-section-title">Training</div>
         <ul class="sidebar-nav">
           <li>
-            <button class="primary" onclick="startFullTraining()">
-              ▶ Start Full New-Hire Training
+            <button class="primary" onclick="quickPrompt('Start full new-hire safety training now.')">
+              <span class="label">Start Full Training</span>
+              <span class="badge">New Hire</span>
             </button>
           </li>
-          <li><button onclick="quickPrompt('Begin Bloodborne Pathogens training module for Coastline Family Medicine.')">Bloodborne Pathogens</button></li>
-          <li><button onclick="quickPrompt('Provide Hazard Communication training for Coastline clinic staff (labels and SDS).')">Hazard Communication</button></li>
-          <li><button onclick="quickPrompt('Review PPE requirements and infection control for Coastline Family Medicine clinical staff.')">PPE &amp; Infection Control</button></li>
-          <li><button onclick="quickPrompt('Fire safety and emergency action plan training for Coastline Family Medicine (RACE and PASS).')">Fire &amp; Emergency</button></li>
+          <li>
+            <button onclick="quickPrompt('Begin Bloodborne Pathogens training module.')">
+              <span class="label">Bloodborne Pathogens</span>
+              <span class="badge">BBP</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Provide Hazard Communication training for clinic staff.')">
+              <span class="label">Hazard Communication</span>
+              <span class="badge">HazCom</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Review PPE requirements and exposure control for Coastline clinical staff.')">
+              <span class="label">PPE &amp; Exposure Control</span>
+              <span class="badge">PPE</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Explain Coastline fire safety and emergency action plan, including RACE and PASS.')">
+              <span class="label">Fire &amp; Emergency Plan</span>
+              <span class="badge">EAP</span>
+            </button>
+          </li>
         </ul>
 
         <div class="sidebar-section-title">Quick Actions</div>
         <ul class="sidebar-nav">
-          <li><button onclick="quickPrompt('How do I report a needlestick or blood/body fluid exposure at Coastline Family Medicine?')">Report Exposure</button></li>
-          <li><button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">Emergency Procedures</button></li>
-          <li><button onclick="quickPrompt('Give me a 3-bullet quick safety refresher for Coastline Family Medicine staff.')">3-Minute Refresher</button></li>
+          <li>
+            <button onclick="quickPrompt('What should I do right after a needlestick or splash exposure?')">
+              <span class="label">Report Exposure / Needlestick</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Summarize Coastline emergency procedures and evacuation routes.')">
+              <span class="label">Emergency Procedures</span>
+            </button>
+          </li>
+          <li>
+            <button onclick="quickPrompt('Give me a 3-bullet safety refresher for Coastline Family Medicine.')">
+              <span class="label">3-Minute Refresher</span>
+            </button>
+          </li>
         </ul>
       </div>
 
       <div class="sidebar-footer">
         <strong>Contacts</strong>
         Safety Officer: Cheyenne Yost<br />
-        Supervisor: Katie McKinney
+        Supervisor: Katie McKinney<br />
+        <span class="tagline">Use this portal for training questions and OSHA safety topics only.</span>
       </div>
     </aside>
 
-    <!-- MAIN CHAT AREA -->
+    <!-- MAIN AREA -->
     <main class="main">
+      <!-- Header / progress -->
       <header class="main-header">
-        <div class="main-title-row">
-          <h1 class="main-title">Coastline New Hire / Safety Training Bot</h1>
-          <span style="font-size: 11px; color: var(--text-muted);">
-            Internal training tool – not for patient care
-          </span>
-        </div>
-        <p class="main-subtitle">
-          Use this portal to complete your new-hire safety training or ask any Coastline safety question.
-        </p>
-
-        <!-- Progress Bar -->
-        <div class="progress-wrapper">
-          <div class="progress-label">
-            <span id="progressText">Training progress: 0% (Not started)</span>
-            <span id="progressStage">Module: –</span>
+        <div class="header-row">
+          <div class="header-titles">
+            <h1 class="main-title">Coastline New Hire / Safety Training Bot</h1>
+            <p class="main-subtitle">
+              Complete your required OSHA safety modules or ask a Coastline safety question at any time.
+            </p>
+            <div class="progress-shell">
+              <div class="progress-label-row">
+                <span>New-hire training progress</span>
+                <span id="progressLabel">0% complete</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+            </div>
           </div>
-          <div class="progress-bar">
-            <div class="progress-bar-fill" id="progressFill"></div>
+          <div class="status-pill">
+            <span class="status-dot"></span>
+            <span>Bot online &mdash; training ready</span>
           </div>
-        </div>
-
-        <!-- Quick topic pills -->
-        <div class="pill-row">
-          <button class="pill-button" onclick="startFullTraining()">
-            Start training
-            <span class="pill-badge">Full</span>
-          </button>
-          <button class="pill-button" onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">
-            Safety overview
-          </button>
-          <button class="pill-button" onclick="quickPrompt('What should I do right after a needlestick?')">
-            Needlestick steps
-          </button>
         </div>
       </header>
 
-      <div class="error-banner" id="errorBanner"></div>
+      <!-- Body: Chat panel + Context panel -->
+      <div class="main-body">
+        <!-- CHAT PANEL -->
+        <section class="panel">
+          <div class="panel-header">
+            <span>Training Conversation</span>
+            <span class="panel-title-muted">Ask, learn, and confirm understanding</span>
+          </div>
 
-      <div class="chat-messages" id="chatMessages">
-        <div class="message bot system">
+          <div id="errorBanner" class="error-banner">
+            There was an issue contacting the training engine. You can try again in a moment.
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <div class="message bot system">
 Hi! I’m the Coastline Family Medicine safety training bot.
-You can say “Start new hire training” or click one of the training buttons on the left.
-        </div>
-      </div>
-      <div class="status-text" id="statusText"></div>
+You can say “Start full training” to walk through all new-hire modules, 
+or ask a specific question like “How do I report a needlestick?”.
+            </div>
+          </div>
+          <div id="typingIndicator" class="typing-indicator">
+            Coastline Safety Bot is typing…
+          </div>
+          <div class="status-text" id="statusText"></div>
 
-      <div class="chat-input-area">
-        <input
-          type="text"
-          id="userInput"
-          placeholder="Type your question or say 'Start new hire training'..."
-        />
-        <button id="sendButton">
-          <span class="send-icon">➤</span>
-          Send
-        </button>
+          <div class="chat-input-area">
+            <input
+              type="text"
+              id="userInput"
+              placeholder="Type your question or say 'Start full training'..."
+            />
+            <button id="sendButton">Send</button>
+          </div>
+        </section>
+
+        <!-- CONTEXT / TRAINING PANEL -->
+        <section class="panel">
+          <div class="panel-header">
+            <span>Training Context</span>
+            <span class="panel-title-muted">Current module, key points &amp; transcript</span>
+          </div>
+          <div class="context-body" id="contextBody">
+            <div class="context-card" id="currentModuleCard">
+              <span class="context-tag">Current Module</span>
+              <h3 id="currentModuleTitle">Not started</h3>
+              <p id="currentModuleSummary">
+                When you start training, this panel will show which module you’re in,
+                along with a short summary of goals for that section.
+              </p>
+              <div class="mini-pill-row">
+                <div class="mini-pill">BBP</div>
+                <div class="mini-pill">HazCom</div>
+                <div class="mini-pill">PPE</div>
+                <div class="mini-pill">EAP</div>
+              </div>
+            </div>
+
+            <div class="context-card" id="checklistCard">
+              <h3>Checklist for New Hires</h3>
+              <ul id="checklistList">
+                <li>Complete full new-hire safety training modules.</li>
+                <li>Know how to report an exposure or incident.</li>
+                <li>Know where to find Coastline policies &amp; procedures.</li>
+              </ul>
+            </div>
+
+            <div class="context-card" id="transcriptCard">
+              <h3>Session Snapshot</h3>
+              <p id="transcriptHint">
+                Key training messages can be summarized here later,
+                so you can review what you’ve already covered.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
   </div>
 
   <script>
-    const messagesDiv = document.getElementById("chatMessages");
-    const userInput   = document.getElementById("userInput");
-    const sendButton  = document.getElementById("sendButton");
-    const statusText  = document.getElementById("statusText");
-    const errorBanner = document.getElementById("errorBanner");
+    const messagesDiv     = document.getElementById("chatMessages");
+    const userInput       = document.getElementById("userInput");
+    const sendButton      = document.getElementById("sendButton");
+    const statusText      = document.getElementById("statusText");
+    const typingIndicator = document.getElementById("typingIndicator");
+    const errorBanner     = document.getElementById("errorBanner");
+    const progressFill    = document.getElementById("progressFill");
+    const progressLabel   = document.getElementById("progressLabel");
 
-    const progressFill  = document.getElementById("progressFill");
-    const progressText  = document.getElementById("progressText");
-    const progressStage = document.getElementById("progressStage");
+    const currentModuleTitle   = document.getElementById("currentModuleTitle");
+    const currentModuleSummary = document.getElementById("currentModuleSummary");
 
-    // Simple client-side notion of modules for the progress bar
-    const trainingModules = [
-      "Orientation & Expectations",
-      "Bloodborne Pathogens",
-      "Hazard Communication",
-      "Infection Control & PPE",
-      "Fire & Emergency / Workplace Violence"
-    ];
-    let currentModuleIndex = -1; // -1 = not started
-
-    // Conversation history we send to the backend for better context
+    // Conversation history for context
     const history = [];
-
-    function updateProgressBar() {
-      if (currentModuleIndex < 0) {
-        progressFill.style.width = "0%";
-        progressText.textContent = "Training progress: 0% (Not started)";
-        progressStage.textContent = "Module: –";
-        return;
-      }
-
-      const total = trainingModules.length;
-      const percent = Math.round(((currentModuleIndex + 1) / total) * 100);
-      progressFill.style.width = percent + "%";
-      progressText.textContent = `Training progress: ${percent}%`;
-      progressStage.textContent = `Module: ${trainingModules[currentModuleIndex]} (${currentModuleIndex + 1} of ${total})`;
-    }
-
-    function startFullTraining() {
-      currentModuleIndex = 0;
-      updateProgressBar();
-      quickPrompt("Start full new-hire OSHA-aligned safety training from the beginning.");
-    }
-
-    function showError(message) {
-      errorBanner.textContent = message;
-      errorBanner.style.display = "block";
-    }
-
-    function clearError() {
-      errorBanner.textContent = "";
-      errorBanner.style.display = "none";
-    }
+    let fakeProgress = 0; // simple placeholder progress
 
     function addMessage(text, sender) {
       const div = document.createElement("div");
@@ -593,34 +717,57 @@ You can say “Start new hire training” or click one of the training buttons o
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    let typingBubble = null;
-
-    function showTyping() {
-      // remove any existing typing bubble
-      hideTyping();
-
-      const div = document.createElement("div");
-      div.classList.add("message", "bot", "typing");
-      div.innerHTML = `
-        Coastline Safety Bot is typing
-        <span class="typing-dots">
-          <span></span><span></span><span></span>
-        </span>
-      `;
-      messagesDiv.appendChild(div);
-      messagesDiv.scrollTop = messagesDiv.scrollHeight;
-      typingBubble = div;
-    }
-
-    function hideTyping() {
-      if (typingBubble && typingBubble.parentNode) {
-        typingBubble.parentNode.removeChild(typingBubble);
-      }
-      typingBubble = null;
-    }
-
     function setStatus(text) {
       statusText.textContent = text || "";
+    }
+
+    function setError(visible, text) {
+      if (visible) {
+        errorBanner.style.display = "block";
+        if (text) errorBanner.textContent = text;
+      } else {
+        errorBanner.style.display = "none";
+      }
+    }
+
+    function setTyping(visible) {
+      typingIndicator.style.display = visible ? "block" : "none";
+    }
+
+    function updateProgress(delta) {
+      // Placeholder: bump progress a bit each time training-related message is sent
+      fakeProgress = Math.max(0, Math.min(100, fakeProgress + delta));
+      progressFill.style.width = fakeProgress + "%";
+      progressLabel.textContent = fakeProgress + "% complete";
+    }
+
+    function maybeUpdateModuleContext(userText) {
+      const lower = userText.toLowerCase();
+      if (lower.includes("bloodborne") || lower.includes("bbp")) {
+        currentModuleTitle.textContent = "Bloodborne Pathogens (BBP)";
+        currentModuleSummary.textContent =
+          "Covers OSHA 1910.1030 basics, exposure routes, engineering controls, " +
+          "PPE, and what to do after a blood or body fluid exposure.";
+      } else if (lower.includes("hazard communication") || lower.includes("hazcom")) {
+        currentModuleTitle.textContent = "Hazard Communication (HazCom)";
+        currentModuleSummary.textContent =
+          "Explains labels, Safety Data Sheets (SDS), chemical hazards, and how to protect yourself " +
+          "when using disinfectants and other clinic chemicals.";
+      } else if (lower.includes("ppe") || lower.includes("exposure control")) {
+        currentModuleTitle.textContent = "PPE & Exposure Control";
+        currentModuleSummary.textContent =
+          "Reviews when and how to use gloves, masks, eye protection, gowns, and Coastline’s generic " +
+          "Exposure Control Plan to prevent exposures.";
+      } else if (lower.includes("fire") || lower.includes("emergency") || lower.includes("race")) {
+        currentModuleTitle.textContent = "Fire Safety & Emergency Action Plan";
+        currentModuleSummary.textContent =
+          "Introduces RACE and PASS, how to respond to alarms, and how to safely evacuate or shelter in place.";
+      } else if (lower.includes("start full") || lower.includes("start training")) {
+        currentModuleTitle.textContent = "New-Hire Training Sequence";
+        currentModuleSummary.textContent =
+          "You’re beginning the full Coastline new-hire safety training, including BBP, HazCom, PPE, " +
+          "workplace violence, and emergency procedures.";
+      }
     }
 
     function quickPrompt(text) {
@@ -632,12 +779,13 @@ You can say “Start new hire training” or click one of the training buttons o
       const text = userInput.value.trim();
       if (!text) return;
 
-      clearError();
       addMessage(text, "user");
+      maybeUpdateModuleContext(text);
       userInput.value = "";
       sendButton.disabled = true;
+      setError(false);
       setStatus("Contacting Coastline Safety Bot…");
-      showTyping();
+      setTyping(true);
 
       try {
         const res = await fetch("/chat", {
@@ -651,31 +799,29 @@ You can say “Start new hire training” or click one of the training buttons o
 
         const data = await res.json();
 
-        hideTyping();
-
         if (data.reply) {
           addMessage(data.reply, "bot");
-          // Save this turn in history
           history.push({ user: text, assistant: data.reply });
 
-          // Very light heuristic: if the user mentioned "next module",
-          // bump the progress by one step.
-          if (/next module/i.test(text) && currentModuleIndex >= 0 && currentModuleIndex < trainingModules.length - 1) {
-            currentModuleIndex += 1;
-            updateProgressBar();
+          // Very simple heuristic: if they start or continue training, nudge progress.
+          if (/start full|start training|next module|continue/i.test(text)) {
+            updateProgress(10);
           }
         } else if (data.error) {
-          showError("Error from training engine: " + data.error);
+          setError(true, "Error: " + data.error);
+          addMessage("Error: " + data.error, "bot");
         } else {
-          showError("Unexpected response from server.");
+          setError(true, "Unexpected response from server.");
+          addMessage("Unexpected response from server.", "bot");
         }
       } catch (err) {
         console.error(err);
-        hideTyping();
-        showError("Network error trying to reach the server.");
+        setError(true, "Network error trying to reach the training engine.");
+        addMessage("Network error trying to reach the server.", "bot");
       } finally {
         sendButton.disabled = false;
         setStatus("");
+        setTyping(false);
       }
     }
 
@@ -688,3 +834,4 @@ You can say “Start new hire training” or click one of the training buttons o
   </script>
 </body>
 </html>
+
