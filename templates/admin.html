@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Coastline Training Log – Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      margin-top: 0;
+      color: #005f7f;
+    }
+    .toolbar {
+      margin-bottom: 12px;
+    }
+    .toolbar a {
+      display: inline-block;
+      padding: 6px 10px;
+      margin-right: 8px;
+      border-radius: 4px;
+      background: #005f7f;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    th, td {
+      font-size: 13px;
+      padding: 6px 8px;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    th {
+      background: #e0f4fb;
+      text-align: left;
+      font-weight: bold;
+      color: #00445b;
+    }
+    tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+    .small {
+      font-size: 11px;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <h1>Coastline Training Log – Admin</h1>
+  <div class="toolbar">
+    <a href="/admin/download-log">Download CSV</a>
+    <a href="/">Back to Training Bot</a>
+  </div>
+
+  {% if rows %}
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp (UTC)</th>
+          <th>Employee ID</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>User Message</th>
+          <th>Bot Reply (truncated)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td class="small">{{ r.timestamp }}</td>
+          <td class="small">{{ r.employee_id }}</td>
+          <td class="small">{{ r.employee_name }}</td>
+          <td class="small">{{ r.role }}</td>
+          <td>{{ r.user_message }}</td>
+          <td class="small">{{ r.bot_reply[:200] }}{% if r.bot_reply|length > 200 %}…{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No log entries found yet.</p>
+  {% endif %}
+</body>
+</html>
