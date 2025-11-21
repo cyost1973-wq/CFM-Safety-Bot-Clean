@@ -8,6 +8,7 @@ from flask import (
     jsonify,
     render_template,
     session,
+    send_file,
 )
 from openai import OpenAI
 
@@ -227,12 +228,28 @@ def chat():
             )
         }), 200
 
+    return send_file(
+        TRAINING_LOG_PATH,
+        as_attachment=True,
+        download_name="training_log.csv"
+    )
+    
+@app.route("/admin/download-log", methods=["GET"])
+def download_log():
+    """
+    Download the raw training_log.csv file.
+    For now there is no authentication on this route,
+    so only share the URL internally.
+    """
+    if not os.path.exists(TRAINING_LOG_PATH):
+        return "No log file found yet.", 404
 
 # -----------------------------------------
 #  ENTRY POINT
 # -----------------------------------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
 
 
 
