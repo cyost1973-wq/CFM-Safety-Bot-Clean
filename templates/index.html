@@ -4,522 +4,20 @@
   <meta charset="UTF-8" />
   <title>Coastline New Hire / Safety Training Bot</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      /* Coastline theme */
-      --brand-primary: #005f7f;
-      --brand-primary-dark: #00394f;
-      --brand-accent: #00b4c8;
-      --brand-soft: #e1f4f8;
-      --brand-danger: #b91c1c;
-      --bg-main: #f3f4f6;
-      --bg-chat: #f9fafb;
-      --card-bg: #ffffff;
-      --border-subtle: #e5e7eb;
-      --text-muted: #6b7280;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at top left, #e0f4fb 0, #f3f4f6 45%, #eef2ff 100%);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: stretch;
-      color: #111827;
-    }
-
-    /* App shell */
-    .app-shell {
-      width: 100%;
-      max-width: 1200px;
-      height: 96vh;
-      margin: 8px;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow:
-        0 18px 45px rgba(15, 23, 42, 0.18),
-        0 0 0 1px rgba(148, 163, 184, 0.25);
-      display: flex;
-      overflow: hidden;
-    }
-
-    /* LEFT SIDEBAR */
-    .sidebar {
-      width: 260px;
-      background: linear-gradient(165deg, var(--brand-primary-dark), var(--brand-primary));
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      padding: 16px 16px 14px;
-    }
-
-    .sidebar-logo {
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .sidebar-logo img {
-      display: block;
-      margin: 0 auto 6px;
-      width: min(42vw, 120px); /* auto-adjusts on narrow screens */
-      max-width: 120px;
-      height: auto;
-      border-radius: 999px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.38);
-    }
-
-    .sidebar-title {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-    }
-
-    .sidebar-subtitle {
-      font-size: 11px;
-      margin-top: 2px;
-      color: #d7f4ff;
-      opacity: 0.95;
-    }
-
-    .sidebar-section-title {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-top: 20px;
-      margin-bottom: 6px;
-      opacity: 0.85;
-    }
-
-    .sidebar-nav {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .sidebar-nav li {
-      margin-bottom: 6px;
-    }
-
-    .sidebar-nav button {
-      width: 100%;
-      border: none;
-      border-radius: 8px;
-      padding: 8px 10px;
-      text-align: left;
-      font-size: 13px;
-      background: rgba(255, 255, 255, 0.12);
-      color: #ffffff;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 6px;
-      transition:
-        background 0.16s ease,
-        transform 0.06s ease,
-        box-shadow 0.12s ease;
-    }
-
-    .sidebar-nav button span.label {
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .sidebar-nav button span.badge {
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.18);
-    }
-
-    .sidebar-nav button:hover {
-      background: rgba(255, 255, 255, 0.22);
-      transform: translateY(-1px);
-      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.25);
-    }
-
-    .sidebar-nav button.primary {
-      background: #ffffff;
-      color: var(--brand-primary-dark);
-    }
-
-    .sidebar-nav button.primary:hover {
-      background: #f1fbff;
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      font-size: 11px;
-      opacity: 0.92;
-      border-top: 1px solid rgba(255, 255, 255, 0.18);
-      padding-top: 8px;
-    }
-
-    .sidebar-footer strong {
-      display: block;
-      margin-bottom: 2px;
-      font-weight: 600;
-    }
-
-    .sidebar-footer .tagline {
-      font-size: 10px;
-      opacity: 0.9;
-    }
-
-    /* MAIN AREA */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg-main);
-    }
-
-    .main-header {
-      padding: 10px 18px;
-      border-bottom: 1px solid var(--border-subtle);
-      background: radial-gradient(circle at top right, #e0f2fe 0, #ffffff 50%);
-    }
-
-    .header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .header-titles {
-      min-width: 0;
-    }
-
-    .main-title {
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--brand-primary-dark);
-      margin: 0;
-    }
-
-    .main-subtitle {
-      font-size: 13px;
-      margin: 2px 0 4px;
-      color: var(--text-muted);
-    }
-
-    .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      background: var(--brand-soft);
-      color: var(--brand-primary-dark);
-      font-size: 11px;
-      font-weight: 600;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: #22c55e;
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
-    }
-
-    /* Progress bar */
-    .progress-shell {
-      margin-top: 6px;
-    }
-
-    .progress-label-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 7px;
-      border-radius: 999px;
-      background: #e5e7eb;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--brand-accent), var(--brand-primary));
-      transition: width 0.25s ease-out;
-    }
-
-    /* Main content layout: chat + context column */
-    .main-body {
-      flex: 1;
-      display: grid;
-      grid-template-columns: minmax(0, 2.2fr) minmax(260px, 1.4fr);
-      gap: 10px;
-      padding: 10px 12px 12px;
-      min-height: 0;
-    }
-
-    .panel {
-      background: var(--bg-chat);
-      border-radius: 10px;
-      border: 1px solid var(--border-subtle);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-
-    .panel-header {
-      padding: 8px 11px;
-      border-bottom: 1px solid var(--border-subtle);
-      font-size: 13px;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #111827;
-      background: #ffffff;
-    }
-
-    .panel-title-muted {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    /* Chat panel */
-    .chat-messages {
-      flex: 1;
-      padding: 12px 12px 6px;
-      overflow-y: auto;
-    }
-
-    .message {
-      margin-bottom: 10px;
-      padding: 8px 10px;
-      border-radius: 7px;
-      max-width: 92%;
-      line-height: 1.4;
-      white-space: pre-wrap;
-      font-size: 14px;
-    }
-
-    .message.user {
-      background: var(--brand-primary);
-      color: #ffffff;
-      margin-left: auto;
-      border-bottom-right-radius: 2px;
-    }
-
-    .message.bot {
-      background: #e5e7eb;
-      color: #111827;
-      margin-right: auto;
-      border-bottom-left-radius: 2px;
-    }
-
-    .message.system {
-      background: #fef9c3;
-      border: 1px solid #facc15;
-      color: #854d0e;
-      font-size: 13px;
-    }
-
-    .typing-indicator {
-      display: none;
-      font-size: 11px;
-      color: var(--text-muted);
-      padding: 0 12px 6px;
-      font-style: italic;
-    }
-
-    /* Error banner */
-    .error-banner {
-      display: none;
-      margin: 0 10px 6px;
-      padding: 6px 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      background: #fef2f2;
-      color: var(--brand-danger);
-      border: 1px solid #fecaca;
-    }
-
-    /* Chat input */
-    .chat-input-area {
-      display: flex;
-      padding: 8px;
-      border-top: 1px solid var(--border-subtle);
-      background: #ffffff;
-      gap: 8px;
-    }
-
-    .chat-input-area input {
-      flex: 1;
-      padding: 7px 9px;
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      font-size: 14px;
-    }
-
-    .chat-input-area button {
-      padding: 7px 16px;
-      border: none;
-      border-radius: 999px;
-      background: var(--brand-primary);
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.12s ease, transform 0.05s ease;
-    }
-
-    .chat-input-area button:hover:not(:disabled) {
-      background: var(--brand-primary-dark);
-      transform: translateY(-1px);
-    }
-
-    .chat-input-area button:disabled {
-      background: #9ca3af;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .status-text {
-      font-size: 11px;
-      color: var(--text-muted);
-      padding: 0 12px 4px;
-    }
-
-    /* Context / side panel */
-    .context-body {
-      flex: 1;
-      padding: 8px 10px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .context-card {
-      background: #ffffff;
-      border-radius: 8px;
-      border: 1px solid var(--border-subtle);
-      padding: 8px 9px;
-      font-size: 12px;
-    }
-
-    .context-card h3 {
-      margin: 0 0 4px;
-      font-size: 13px;
-      color: #111827;
-    }
-
-    .context-card ul {
-      margin: 4px 0 0;
-      padding-left: 18px;
-    }
-
-    .context-tag {
-      display: inline-block;
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: var(--brand-soft);
-      color: var(--brand-primary-dark);
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
-
-    .mini-pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-top: 4px;
-    }
-
-    .mini-pill {
-      font-size: 10px;
-      border-radius: 999px;
-      padding: 2px 6px;
-      background: #f3f4f6;
-      color: var(--text-muted);
-    }
-
-    /* Mobile / narrow screens */
-    @media (max-width: 1000px) {
-      .app-shell {
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
-      }
-      .sidebar {
-        width: 100%;
-        flex-direction: row;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .sidebar-logo {
-        margin-bottom: 4px;
-        margin-right: 12px;
-        text-align: left;
-      }
-      .sidebar-title,
-      .sidebar-subtitle {
-        text-align: left;
-      }
-      .sidebar-main {
-        flex: 1;
-        margin-left: 10px;
-      }
-      .sidebar-footer {
-        display: none;
-      }
-      .main-body {
-        grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: auto auto;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .main-header {
-        padding: 8px 10px;
-      }
-      .app-shell {
-        margin: 0;
-        border-radius: 0;
-      }
-      .sidebar {
-        padding: 10px 10px 8px;
-      }
-      .sidebar-logo img {
-        width: min(32vw, 90px);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
   <div class="app-shell">
     <!-- LEFT SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-logo">
-        <!-- Ensure this file exists: static/cfm-logo.webp -->
-        <img src="/static/cfm-logo.webp" alt="Coastline Family Medicine logo" />
+        <!-- Put your logo at static/cfm-logo.webp -->
+        <img src="{{ url_for('static', filename='cfm-logo.webp') }}"
+             alt="Coastline Family Medicine Logo">
         <div class="sidebar-title">Coastline Safety Bot</div>
         <div class="sidebar-subtitle">
-          Coastline Family Medicine Safety &amp; Compliance Training Portal
+          Coastline Family Medicine Safety &amp;<br>
+          Compliance Training Portal
         </div>
       </div>
 
@@ -527,32 +25,32 @@
         <div class="sidebar-section-title">Training</div>
         <ul class="sidebar-nav">
           <li>
-            <button class="primary" onclick="quickPrompt('Start full new-hire safety training now.')">
-              <span class="label">Start Full Training</span>
-              <span class="badge">New Hire</span>
+            <button class="primary" onclick="quickPrompt('Start full new-hire safety training sequence.')">
+              <span>Start Full Training</span>
+              <span class="badge">New hire</span>
             </button>
           </li>
           <li>
-            <button onclick="quickPrompt('Begin Bloodborne Pathogens training module.')">
-              <span class="label">Bloodborne Pathogens</span>
+            <button onclick="quickPrompt('Begin Bloodborne Pathogens module.')">
+              <span>Bloodborne Pathogens</span>
               <span class="badge">BBP</span>
             </button>
           </li>
           <li>
-            <button onclick="quickPrompt('Provide Hazard Communication training for clinic staff.')">
-              <span class="label">Hazard Communication</span>
+            <button onclick="quickPrompt('Start Hazard Communication training for Coastline staff.')">
+              <span>Hazard Communication</span>
               <span class="badge">HazCom</span>
             </button>
           </li>
           <li>
-            <button onclick="quickPrompt('Review PPE requirements and exposure control for Coastline clinical staff.')">
-              <span class="label">PPE &amp; Exposure Control</span>
+            <button onclick="quickPrompt('Review PPE and exposure control procedures for Coastline Family Medicine.')">
+              <span>PPE &amp; Exposure Control</span>
               <span class="badge">PPE</span>
             </button>
           </li>
           <li>
-            <button onclick="quickPrompt('Explain Coastline fire safety and emergency action plan, including RACE and PASS.')">
-              <span class="label">Fire &amp; Emergency Plan</span>
+            <button onclick="quickPrompt('Fire safety and emergency action plan training.')">
+              <span>Fire &amp; Emergency Plan</span>
               <span class="badge">EAP</span>
             </button>
           </li>
@@ -561,18 +59,18 @@
         <div class="sidebar-section-title">Quick Actions</div>
         <ul class="sidebar-nav">
           <li>
-            <button onclick="quickPrompt('What should I do right after a needlestick or splash exposure?')">
-              <span class="label">Report Exposure / Needlestick</span>
+            <button onclick="quickPrompt('How do I report a needlestick or blood/body fluid exposure at Coastline?')">
+              <span>Report Exposure / Needlestick</span>
             </button>
           </li>
           <li>
-            <button onclick="quickPrompt('Summarize Coastline emergency procedures and evacuation routes.')">
-              <span class="label">Emergency Procedures</span>
+            <button onclick="quickPrompt('Summarize emergency procedures and evacuation routes for Coastline Family Medicine.')">
+              <span>Emergency Procedures</span>
             </button>
           </li>
           <li>
-            <button onclick="quickPrompt('Give me a 3-bullet safety refresher for Coastline Family Medicine.')">
-              <span class="label">3-Minute Refresher</span>
+            <button onclick="quickPrompt('Give me a 3-minute safety refresher with key points only.')">
+              <span>3-Minute Refresher</span>
             </button>
           </li>
         </ul>
@@ -580,134 +78,132 @@
 
       <div class="sidebar-footer">
         <strong>Contacts</strong>
-        Safety Officer: Cheyenne Yost<br />
-        Supervisor: Katie McKinney<br />
-        <span class="tagline">Use this portal for training questions and OSHA safety topics only.</span>
+        Safety Officer: Cheyenne Yost<br>
+        Supervisor: Katie McKinney<br>
+        Use this portal for training questions and OSHA safety topics only.
       </div>
     </aside>
 
-    <!-- MAIN AREA -->
+    <!-- MAIN CHAT COLUMN -->
     <main class="main">
-      <!-- Header / progress -->
       <header class="main-header">
-        <div class="header-row">
-          <div class="header-titles">
-            <h1 class="main-title">Coastline New Hire / Safety Training Bot</h1>
-            <p class="main-subtitle">
-              Complete your required OSHA safety modules or ask a Coastline safety question at any time.
-            </p>
-            <div class="progress-shell">
-              <div class="progress-label-row">
-                <span>New-hire training progress</span>
-                <span id="progressLabel">0% complete</span>
-              </div>
-              <div class="progress-track">
-                <div class="progress-fill" id="progressFill"></div>
-              </div>
-            </div>
-          </div>
-          <div class="status-pill">
-            <span class="status-dot"></span>
-            <span>Bot online &mdash; training ready</span>
-          </div>
+        <h1 class="main-title">Coastline New Hire / Safety Training Bot</h1>
+        <p class="main-subtitle">
+          Complete your required OSHA safety modules or ask a Coastline safety question at any time.
+        </p>
+
+        <div class="progress-row">
+          <span class="progress-label" id="progressLabel">
+            New-hire training progress
+          </span>
+          <span class="progress-badge" id="progressBadge">
+            0% complete
+          </span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="pill-row" style="margin-top: 6px;">
+          <button class="pill-button"
+                  onclick="quickPrompt('Start full new-hire safety training sequence.')">
+            Start full training
+          </button>
+          <button class="pill-button"
+                  onclick="quickPrompt('Give me a quick overview of Coastline Family Medicine safety rules.')">
+            Safety overview
+          </button>
+          <button class="pill-button"
+                  onclick="quickPrompt('What should I do immediately after a needlestick?')">
+            Needlestick steps
+          </button>
         </div>
       </header>
 
-      <!-- Body: Chat panel + Context panel -->
-      <div class="main-body">
-        <!-- CHAT PANEL -->
-        <section class="panel">
-          <div class="panel-header">
-            <span>Training Conversation</span>
-            <span class="panel-title-muted">Ask, learn, and confirm understanding</span>
-          </div>
+      <div id="errorBanner" class="error-banner"></div>
 
-          <div id="errorBanner" class="error-banner">
-            There was an issue contacting the training engine. You can try again in a moment.
-          </div>
-
-          <div class="chat-messages" id="chatMessages">
-            <div class="message bot system">
+      <div class="chat-messages" id="chatMessages">
+        <div class="message bot system">
 Hi! I’m the Coastline Family Medicine safety training bot.
-You can say “Start full training” to walk through all new-hire modules, 
-or ask a specific question like “How do I report a needlestick?”.
-            </div>
-          </div>
-          <div id="typingIndicator" class="typing-indicator">
-            Coastline Safety Bot is typing…
-          </div>
-          <div class="status-text" id="statusText"></div>
+You can say “Start full training” or ask a specific safety question (e.g., “How do I report a needlestick?”).
+        </div>
+      </div>
 
-          <div class="chat-input-area">
-            <input
-              type="text"
-              id="userInput"
-              placeholder="Type your question or say 'Start full training'..."
-            />
-            <button id="sendButton">Send</button>
-          </div>
-        </section>
+      <div class="status-text" id="statusText"></div>
 
-        <!-- CONTEXT / TRAINING PANEL -->
-        <section class="panel">
-          <div class="panel-header">
-            <span>Training Context</span>
-            <span class="panel-title-muted">Current module, key points &amp; transcript</span>
-          </div>
-          <div class="context-body" id="contextBody">
-            <div class="context-card" id="currentModuleCard">
-              <span class="context-tag">Current Module</span>
-              <h3 id="currentModuleTitle">Not started</h3>
-              <p id="currentModuleSummary">
-                When you start training, this panel will show which module you’re in,
-                along with a short summary of goals for that section.
-              </p>
-              <div class="mini-pill-row">
-                <div class="mini-pill">BBP</div>
-                <div class="mini-pill">HazCom</div>
-                <div class="mini-pill">PPE</div>
-                <div class="mini-pill">EAP</div>
-              </div>
-            </div>
-
-            <div class="context-card" id="checklistCard">
-              <h3>Checklist for New Hires</h3>
-              <ul id="checklistList">
-                <li>Complete full new-hire safety training modules.</li>
-                <li>Know how to report an exposure or incident.</li>
-                <li>Know where to find Coastline policies &amp; procedures.</li>
-              </ul>
-            </div>
-
-            <div class="context-card" id="transcriptCard">
-              <h3>Session Snapshot</h3>
-              <p id="transcriptHint">
-                Key training messages can be summarized here later,
-                so you can review what you’ve already covered.
-              </p>
-            </div>
-          </div>
-        </section>
+      <div class="chat-input-area">
+        <input
+          type="text"
+          id="userInput"
+          placeholder="Type your question or say 'Start full training'..."
+        />
+        <button id="sendButton">
+          <span>Send</span>
+          <span>➤</span>
+        </button>
       </div>
     </main>
+
+    <!-- RIGHT CONTEXT PANEL -->
+    <aside class="right-panel">
+      <div class="right-panel-header">
+        <div class="right-status">
+          <span class="status-dot"></span>
+          <span id="botStatusText">Bot online — training ready</span>
+        </div>
+        <div class="right-panel-tabs">
+          Current module, key points &amp; transcript
+        </div>
+      </div>
+
+      <!-- Current module card -->
+      <section class="card" id="cardCurrentModule">
+        <div class="card-title">Current Module</div>
+        <div class="card-muted" id="currentModuleName">
+          New-Hire Training Sequence
+        </div>
+        <p class="card-muted" id="currentModuleDescription">
+          You’re beginning the full Coastline new-hire safety training,
+          including BBP, HazCom, PPE, workplace violence, and emergency procedures.
+        </p>
+        <div class="card-pill-row">
+          <span class="card-pill">BBP</span>
+          <span class="card-pill">HazCom</span>
+          <span class="card-pill">PPE</span>
+          <span class="card-pill">EAP</span>
+        </div>
+      </section>
+
+      <!-- Checklist card -->
+      <section class="card" id="cardChecklist">
+        <div class="card-title">Checklist for New Hires</div>
+        <ul class="card-list" id="checklistItems">
+          <li>Complete full new-hire safety training modules.</li>
+          <li>Know how to report an exposure or incident.</li>
+          <li>Know where to find Coastline policies &amp; procedures.</li>
+        </ul>
+      </section>
+
+      <!-- Session snapshot card -->
+      <section class="card" id="cardSnapshot">
+        <div class="card-title">Session Snapshot</div>
+        <p class="card-muted" id="sessionSnapshot">
+          Key training messages can be summarized here later, so you can
+          review what you’ve already covered in this session.
+        </p>
+      </section>
+    </aside>
   </div>
 
   <script>
-    const messagesDiv     = document.getElementById("chatMessages");
-    const userInput       = document.getElementById("userInput");
-    const sendButton      = document.getElementById("sendButton");
-    const statusText      = document.getElementById("statusText");
-    const typingIndicator = document.getElementById("typingIndicator");
-    const errorBanner     = document.getElementById("errorBanner");
-    const progressFill    = document.getElementById("progressFill");
-    const progressLabel   = document.getElementById("progressLabel");
+    const messagesDiv = document.getElementById("chatMessages");
+    const userInput   = document.getElementById("userInput");
+    const sendButton  = document.getElementById("sendButton");
+    const statusText  = document.getElementById("statusText");
+    const errorBanner = document.getElementById("errorBanner");
+    const typingId    = "typing-indicator";
 
-    const currentModuleTitle   = document.getElementById("currentModuleTitle");
-    const currentModuleSummary = document.getElementById("currentModuleSummary");
-
-    // Conversation history for context
     const history = [];
-    let fakeProgress = 0; // simple placeholder progress
 
     function addMessage(text, sender) {
       const div = document.createElement("div");
@@ -717,56 +213,40 @@ or ask a specific question like “How do I report a needlestick?”.
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
+    function showTyping() {
+      removeTyping();
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("message", "bot");
+      wrapper.id = typingId;
+
+      const dots = document.createElement("div");
+      dots.classList.add("typing-indicator");
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement("span");
+        dot.classList.add("typing-dot");
+        dots.appendChild(dot);
+      }
+      wrapper.appendChild(dots);
+      messagesDiv.appendChild(wrapper);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function removeTyping() {
+      const existing = document.getElementById(typingId);
+      if (existing) existing.remove();
+    }
+
     function setStatus(text) {
       statusText.textContent = text || "";
     }
 
-    function setError(visible, text) {
-      if (visible) {
-        errorBanner.style.display = "block";
-        if (text) errorBanner.textContent = text;
-      } else {
+    function showError(text) {
+      if (!text) {
         errorBanner.style.display = "none";
-      }
-    }
-
-    function setTyping(visible) {
-      typingIndicator.style.display = visible ? "block" : "none";
-    }
-
-    function updateProgress(delta) {
-      // Placeholder: bump progress a bit each time training-related message is sent
-      fakeProgress = Math.max(0, Math.min(100, fakeProgress + delta));
-      progressFill.style.width = fakeProgress + "%";
-      progressLabel.textContent = fakeProgress + "% complete";
-    }
-
-    function maybeUpdateModuleContext(userText) {
-      const lower = userText.toLowerCase();
-      if (lower.includes("bloodborne") || lower.includes("bbp")) {
-        currentModuleTitle.textContent = "Bloodborne Pathogens (BBP)";
-        currentModuleSummary.textContent =
-          "Covers OSHA 1910.1030 basics, exposure routes, engineering controls, " +
-          "PPE, and what to do after a blood or body fluid exposure.";
-      } else if (lower.includes("hazard communication") || lower.includes("hazcom")) {
-        currentModuleTitle.textContent = "Hazard Communication (HazCom)";
-        currentModuleSummary.textContent =
-          "Explains labels, Safety Data Sheets (SDS), chemical hazards, and how to protect yourself " +
-          "when using disinfectants and other clinic chemicals.";
-      } else if (lower.includes("ppe") || lower.includes("exposure control")) {
-        currentModuleTitle.textContent = "PPE & Exposure Control";
-        currentModuleSummary.textContent =
-          "Reviews when and how to use gloves, masks, eye protection, gowns, and Coastline’s generic " +
-          "Exposure Control Plan to prevent exposures.";
-      } else if (lower.includes("fire") || lower.includes("emergency") || lower.includes("race")) {
-        currentModuleTitle.textContent = "Fire Safety & Emergency Action Plan";
-        currentModuleSummary.textContent =
-          "Introduces RACE and PASS, how to respond to alarms, and how to safely evacuate or shelter in place.";
-      } else if (lower.includes("start full") || lower.includes("start training")) {
-        currentModuleTitle.textContent = "New-Hire Training Sequence";
-        currentModuleSummary.textContent =
-          "You’re beginning the full Coastline new-hire safety training, including BBP, HazCom, PPE, " +
-          "workplace violence, and emergency procedures.";
+        errorBanner.textContent = "";
+      } else {
+        errorBanner.style.display = "block";
+        errorBanner.textContent = text;
       }
     }
 
@@ -780,58 +260,50 @@ or ask a specific question like “How do I report a needlestick?”.
       if (!text) return;
 
       addMessage(text, "user");
-      maybeUpdateModuleContext(text);
       userInput.value = "";
       sendButton.disabled = true;
-      setError(false);
       setStatus("Contacting Coastline Safety Bot…");
-      setTyping(true);
+      showError("");
+      showTyping();
 
       try {
         const res = await fetch("/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: text,
-            history: history
-          }),
+          body: JSON.stringify({ message: text, history }),
         });
 
         const data = await res.json();
+        removeTyping();
 
         if (data.reply) {
           addMessage(data.reply, "bot");
           history.push({ user: text, assistant: data.reply });
 
-          // Very simple heuristic: if they start or continue training, nudge progress.
-          if (/start full|start training|next module|continue/i.test(text)) {
-            updateProgress(10);
-          }
+          // TODO: optional: parse data.meta to update progress, right panel, etc.
+          // For now we just keep UI static.
         } else if (data.error) {
-          setError(true, "Error: " + data.error);
-          addMessage("Error: " + data.error, "bot");
+          showError("Error: " + data.error);
         } else {
-          setError(true, "Unexpected response from server.");
-          addMessage("Unexpected response from server.", "bot");
+          showError("Unexpected response from server.");
         }
       } catch (err) {
         console.error(err);
-        setError(true, "Network error trying to reach the training engine.");
-        addMessage("Network error trying to reach the server.", "bot");
+        removeTyping();
+        showError("Network error trying to reach the server.");
       } finally {
         sendButton.disabled = false;
         setStatus("");
-        setTyping(false);
       }
     }
 
     sendButton.addEventListener("click", sendMessage);
     userInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
-        sendMessage();
-      }
+      if (e.key === "Enter") sendMessage();
     });
   </script>
 </body>
 </html>
+
+
 
